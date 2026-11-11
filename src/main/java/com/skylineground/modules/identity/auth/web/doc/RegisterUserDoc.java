@@ -1,4 +1,4 @@
-package com.skylineground.modules.identity.auth.doc;
+package com.skylineground.modules.identity.auth.web.doc;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

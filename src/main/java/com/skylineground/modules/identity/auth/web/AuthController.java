@@ -1,10 +1,10 @@
-package com.skylineground.modules.identity.auth;
+package com.skylineground.modules.identity.auth.web;
 
-import com.skylineground.modules.identity.auth.doc.LoginUserDoc;
-import com.skylineground.modules.identity.auth.doc.RegisterUserDoc;
 import com.skylineground.modules.identity.auth.dto.LoginRequest;
 import com.skylineground.modules.identity.auth.dto.LoginResponse;
 import com.skylineground.modules.identity.auth.service.LoginService;
+import com.skylineground.modules.identity.auth.web.doc.LoginUserDoc;
+import com.skylineground.modules.identity.auth.web.doc.RegisterUserDoc;
 import com.skylineground.modules.identity.user.dto.UserRequest;
 import com.skylineground.modules.identity.user.dto.UserResponse;
 import com.skylineground.modules.identity.user.service.CreateUserService;
