@@ -1,4 +1,4 @@
-package com.skylineground.core.security;
+package com.skylineground.core.security.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -7,51 +7,41 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import com.skylineground.modules.identity.user.User;
 import com.skylineground.modules.identity.user.constant.SystemRole;
-import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-@Component
+@Service
 public class TokenService {
 
-    @Value("${app.security.jwt.secret}")
-    private String secret;
+    private final JWTProperties props;
+    private final Algorithm algorithm;
+    private final JWTVerifier verifier;
 
-    @Value("${app.security.jwt.issuer}")
-    private String issuer;
+    public TokenService(JWTProperties props) {
+        this.props = Objects.requireNonNull(props, "JWT Properties must not be null");
 
-    @Value("${app.security.jwt.expiration-seconds}")
-    private long expirationSeconds;
+        Objects.requireNonNull(props.secret(), "JWT Secret must not be null");
+        Objects.requireNonNull(props.issuer(), "JWT Issuer must not be null");
 
-    private Algorithm algorithm;
-    private JWTVerifier verifier;
-
-    @PostConstruct // Ensure that the secret and the issuer are not null, because their values not yet initialized.
-    public void init() {
-
-        Objects.requireNonNull(secret, "JWT Secret must not be null");
-        Objects.requireNonNull(issuer, "JWT Issuer must not be null");
-
-        this.algorithm = Algorithm.HMAC256(secret);
+        this.algorithm = Algorithm.HMAC256(props.secret());
         this.verifier = JWT.require(algorithm)
-                .withIssuer(issuer)
-                .acceptLeeway(5) // Tolerance in seconds for clock drift between servers.
+                .withIssuer(props.issuer())
+                .acceptLeeway(5)
                 .build();
     }
 
     public String generate(User user) {
         Instant now = Instant.now();
         return JWT.create()
-                .withIssuer(issuer)
+                .withIssuer(props.issuer())
                 .withSubject(user.getExternalId().toString())
                 .withClaim("systemRole", user.getSystemRole().name())
                 .withIssuedAt(now)
-                .withExpiresAt(now.plusSeconds(expirationSeconds))
+                .withExpiresAt(now.plusSeconds(props.expirationSeconds()))
                 .sign(algorithm);
     }
 

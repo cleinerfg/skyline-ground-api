@@ -1,6 +1,6 @@
 package com.skylineground.modules.identity.auth;
 
-import com.skylineground.core.security.TokenService;
+import com.skylineground.core.security.jwt.TokenService;
 import com.skylineground.modules.identity.auth.dto.LoginRequest;
 import com.skylineground.modules.identity.auth.dto.LoginResponse;
 import com.skylineground.modules.identity.auth.exception.InvalidCredentialsException;

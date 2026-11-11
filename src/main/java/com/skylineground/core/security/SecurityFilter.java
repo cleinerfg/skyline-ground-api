@@ -1,5 +1,7 @@
 package com.skylineground.core.security;
 
+import com.skylineground.core.security.jwt.TokenPayload;
+import com.skylineground.core.security.jwt.TokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,13 +27,13 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(
-           @NonNull HttpServletRequest request,
-           @NonNull HttpServletResponse response,
-           @NonNull FilterChain filterChain
+            @NonNull HttpServletRequest request,
+            @NonNull HttpServletResponse response,
+            @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
         String token = extractToken(request);
 
-        if(token != null){
+        if (token != null) {
             Optional<TokenPayload> optTokenPayload = tokenService.validate(token);
 
             optTokenPayload.ifPresent(tokenPayload -> {
