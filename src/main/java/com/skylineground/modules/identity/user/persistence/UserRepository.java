@@ -1,4 +1,4 @@
-package com.skylineground.modules.identity.user;
+package com.skylineground.modules.identity.user.persistence;
 
 import com.skylineground.modules.identity.user.constant.SystemRole;
 import com.skylineground.modules.identity.user.dto.UserSummary;

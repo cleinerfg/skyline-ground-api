@@ -1,7 +1,7 @@
-package com.skylineground.modules.project;
+package com.skylineground.modules.project.persistence;
 
 import com.skylineground.core.common.BaseEntity;
-import com.skylineground.modules.identity.user.User;
+import com.skylineground.modules.identity.user.persistence.User;
 import com.skylineground.modules.project.constant.ProjectStatus;
 import com.skylineground.modules.project.constant.ProjectType;
 import jakarta.persistence.*;

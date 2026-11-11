@@ -1,14 +1,14 @@
 package com.skylineground.modules.project.service;
 
-import com.skylineground.modules.identity.user.User;
-import com.skylineground.modules.identity.user.UserReferenceProvider;
-import com.skylineground.modules.identity.user.UserRepository;
 import com.skylineground.modules.identity.user.dto.UserSummary;
-import com.skylineground.modules.project.Project;
+import com.skylineground.modules.identity.user.persistence.User;
+import com.skylineground.modules.identity.user.persistence.UserReferenceProvider;
+import com.skylineground.modules.identity.user.persistence.UserRepository;
 import com.skylineground.modules.project.ProjectMapper;
-import com.skylineground.modules.project.ProjectRepository;
 import com.skylineground.modules.project.dto.ProjectRequest;
 import com.skylineground.modules.project.dto.ProjectResponse;
+import com.skylineground.modules.project.persistence.Project;
+import com.skylineground.modules.project.persistence.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

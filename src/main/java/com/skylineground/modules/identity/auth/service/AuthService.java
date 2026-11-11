@@ -1,6 +1,6 @@
 package com.skylineground.modules.identity.auth.service;
 
-import com.skylineground.modules.identity.user.UserRepository;
+import com.skylineground.modules.identity.user.persistence.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

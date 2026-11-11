@@ -1,9 +1,10 @@
 package com.skylineground.modules.project;
 
-import com.skylineground.modules.identity.user.User;
 import com.skylineground.modules.identity.user.dto.UserSummary;
+import com.skylineground.modules.identity.user.persistence.User;
 import com.skylineground.modules.project.dto.ProjectRequest;
 import com.skylineground.modules.project.dto.ProjectResponse;
+import com.skylineground.modules.project.persistence.Project;
 import org.springframework.stereotype.Component;
 
 @Component

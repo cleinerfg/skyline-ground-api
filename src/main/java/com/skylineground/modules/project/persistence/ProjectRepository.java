@@ -1,4 +1,4 @@
-package com.skylineground.modules.project;
+package com.skylineground.modules.project.persistence;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

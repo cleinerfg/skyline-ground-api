@@ -1,9 +1,9 @@
 package com.skylineground.core.config.admin;
 
 import com.skylineground.core.config.uuid.UuidGenerator;
-import com.skylineground.modules.identity.user.User;
-import com.skylineground.modules.identity.user.UserRepository;
 import com.skylineground.modules.identity.user.constant.SystemRole;
+import com.skylineground.modules.identity.user.persistence.User;
+import com.skylineground.modules.identity.user.persistence.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;

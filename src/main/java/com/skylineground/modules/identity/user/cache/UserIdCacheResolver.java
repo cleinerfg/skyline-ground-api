@@ -1,7 +1,8 @@
 package com.skylineground.modules.identity.user.cache;
 
 
-import com.skylineground.modules.identity.user.UserRepository;
+import com.skylineground.modules.identity.user.persistence.UserReferenceProvider;
+import com.skylineground.modules.identity.user.persistence.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.UUID;
 
 /**
- * Kept separate from {@link com.skylineground.modules.identity.user.UserReferenceProvider}
+ * Kept separate from {@link UserReferenceProvider}
  * to ensure Spring's cache proxy intercepts the call correctly —
  * self-invocation within the same bean bypasses the proxy.
  */
