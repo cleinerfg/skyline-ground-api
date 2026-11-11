@@ -1,6 +1,6 @@
 package com.skylineground.core.config.admin;
 
-import com.fasterxml.uuid.impl.TimeBasedEpochGenerator;
+import com.skylineground.core.config.uuid.UuidGenerator;
 import com.skylineground.modules.identity.user.User;
 import com.skylineground.modules.identity.user.UserRepository;
 import com.skylineground.modules.identity.user.constant.SystemRole;
@@ -16,7 +16,7 @@ public class AdminSeeder implements CommandLineRunner {
     private final AdminProperties props;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final TimeBasedEpochGenerator uuidGenerator;
+    private final UuidGenerator uuidGenerator;
 
     // Seed Admin when start Application
     @Override

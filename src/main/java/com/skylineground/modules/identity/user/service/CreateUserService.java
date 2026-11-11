@@ -1,6 +1,6 @@
 package com.skylineground.modules.identity.user.service;
 
-import com.fasterxml.uuid.impl.TimeBasedEpochGenerator;
+import com.skylineground.core.config.uuid.UuidGenerator;
 import com.skylineground.modules.identity.user.UserMapper;
 import com.skylineground.modules.identity.user.UserRepository;
 import com.skylineground.modules.identity.user.dto.UserRequest;
@@ -18,7 +18,7 @@ public class CreateUserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
-    private final TimeBasedEpochGenerator uuidGenerator;
+    private final UuidGenerator uuidGenerator;
 
     @Transactional
     public UserResponse execute(UserRequest dto) {
