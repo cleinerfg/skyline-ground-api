@@ -1,4 +1,4 @@
-package com.skylineground.core.security;
+package com.skylineground.core.security.config;
 
 import com.skylineground.core.security.jwt.TokenPayload;
 import com.skylineground.core.security.jwt.TokenService;
@@ -23,8 +23,7 @@ import java.util.Optional;
 public class SecurityFilter extends OncePerRequestFilter {
 
     private final TokenService tokenService;
-
-
+    
     @Override
     protected void doFilterInternal(
             @NonNull HttpServletRequest request,

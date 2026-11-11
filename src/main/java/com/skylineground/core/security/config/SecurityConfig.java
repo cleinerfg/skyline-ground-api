@@ -1,4 +1,4 @@
-package com.skylineground.core.security;
+package com.skylineground.core.security.config;
 
 import jakarta.servlet.DispatcherType;
 import lombok.RequiredArgsConstructor;
