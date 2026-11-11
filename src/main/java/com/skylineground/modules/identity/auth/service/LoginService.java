@@ -1,4 +1,4 @@
-package com.skylineground.modules.identity.auth;
+package com.skylineground.modules.identity.auth.service;
 
 import com.skylineground.core.security.jwt.TokenService;
 import com.skylineground.modules.identity.auth.dto.LoginRequest;
