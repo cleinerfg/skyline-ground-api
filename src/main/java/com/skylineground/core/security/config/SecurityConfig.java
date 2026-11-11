@@ -33,6 +33,7 @@ public class SecurityConfig {
                         .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                        .requestMatchers("/api/v1/cache/**").permitAll() // Just for dev, update after
                         .requestMatchers(
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
