@@ -5,6 +5,7 @@ import com.skylineground.core.exception.AppException;
 import com.skylineground.core.exception.ErrorCode;
 import com.skylineground.core.exception.web.resolver.schema.FieldFormatViolation;
 import com.skylineground.core.exception.web.support.ProblemDetailFactory;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -108,5 +109,46 @@ class InvalidJsonResolverTest {
                 ErrorCode.INVALID_JSON,
                 AppException.invalidJson().getMessage()
         );
+    }
+
+    @Test
+    void shouldResolveFormatViolationWithoutFieldPath() {
+        InvalidFormatException formatException = InvalidFormatException.from(
+                null,
+                "Invalid enum value",
+                "UNKNOWN",
+                TestStatus.class
+        );
+
+        HttpMessageNotReadableException exception =
+                new HttpMessageNotReadableException(
+                        "Invalid format",
+                        formatException,
+                        mock(HttpInputMessage.class)
+                );
+
+        ProblemDetail expected = ProblemDetail.forStatusAndDetail(
+                ErrorCode.INVALID_JSON.getStatus(),
+                AppException.invalidJson().getMessage()
+        );
+
+        when(problemDetailFactory.create(
+                ErrorCode.INVALID_JSON,
+                AppException.invalidJson().getMessage()
+        )).thenReturn(expected);
+
+        ProblemDetail result = resolver.resolve(exception);
+
+        assertThat(result.getProperties())
+                .containsEntry("violation", InvalidJsonResolver.VIOLATION_FORMAT);
+
+        Assertions.assertNotNull(result.getProperties());
+        assertThat(result.getProperties().get("fail"))
+                .isInstanceOf(FieldFormatViolation.class);
+
+        FieldFormatViolation violation =
+                (FieldFormatViolation) result.getProperties().get("fail");
+
+        assertThat(violation.field()).isEqualTo("UNKNOWN_FIELD");
     }
 }
