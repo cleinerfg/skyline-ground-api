@@ -14,7 +14,7 @@ public class AppException extends RuntimeException {
     private final transient ErrorCode errorCode;
     private final transient Set<String> fails = new LinkedHashSet<>();
 
-    public AppException(ErrorCode errorCode, String message) {
+    protected AppException(ErrorCode errorCode, String message) {
         super(message);
         this.errorCode = errorCode;
     }
