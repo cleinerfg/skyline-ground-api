@@ -1,10 +1,11 @@
 package com.skylineground.modules.identity.auth.exception;
 
-import com.skylineground.core.exception.BusinessException;
-import com.skylineground.modules.identity.IdentityErrorCode;
+import com.skylineground.core.exception.AppException;
+import com.skylineground.core.exception.ErrorCode;
 
-public class InvalidCredentialsException extends BusinessException {
+public class InvalidCredentialsException extends AppException {
+
     public InvalidCredentialsException() {
-        super(IdentityErrorCode.INVALID_CREDENTIALS);
+        super(ErrorCode.INVALID_CREDENTIALS, "Incorrect email or password.");
     }
 }

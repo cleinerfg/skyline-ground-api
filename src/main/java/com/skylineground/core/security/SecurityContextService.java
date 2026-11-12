@@ -1,6 +1,6 @@
 package com.skylineground.core.security;
 
-import com.skylineground.core.exception.AuthenticationRequiredException;
+import com.skylineground.core.security.jwt.TokenException;
 import com.skylineground.core.security.jwt.TokenPayload;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ public class SecurityContextService {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null || !authentication.isAuthenticated()) {
-            throw new AuthenticationRequiredException();
+            throw TokenException.required();
         }
 
         return (TokenPayload) authentication.getPrincipal();
