@@ -43,7 +43,7 @@ public class InvalidJsonResolver {
         if (ex.getCause() instanceof InvalidFormatException formatException) {
             Class<?> type = formatException.getTargetType();
             String field = formatException.getPath().isEmpty() ? "UNKNOWN_FIELD"
-                    : formatException.getPath().get(0).getFieldName();
+                    : formatException.getPath().getFirst().getFieldName();
 
             return FieldFormatViolation.builder()
                     .field(field)

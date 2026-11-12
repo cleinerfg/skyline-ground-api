@@ -4,7 +4,6 @@ import lombok.experimental.UtilityClass;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
-import java.util.Collections;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -14,12 +13,12 @@ import java.util.stream.Stream;
 public class FieldFormatViolationExtractor {
 
     public static Set<String> extractEnumConstants(Class<?> type) {
-        if (type != null && type.isEnum()) {
-            return Stream.of(type.getEnumConstants())
-                    .map(Object::toString)
-                    .collect(Collectors.toSet());
+        if (type == null || !type.isEnum()) {
+            return Set.of();
         }
-        return Collections.emptySet();
+        return Stream.of(type.getEnumConstants())
+                .map(e -> ((Enum<?>) e).name())
+                .collect(Collectors.toSet());
     }
 
     public static String extractMessage(Class<?> type) {
