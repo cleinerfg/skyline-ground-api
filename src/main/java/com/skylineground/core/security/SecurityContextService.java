@@ -1,5 +1,6 @@
 package com.skylineground.core.security;
 
+import com.skylineground.core.exception.AppException;
 import com.skylineground.core.security.jwt.TokenException;
 import com.skylineground.core.security.jwt.TokenPayload;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,6 +16,12 @@ public class SecurityContextService {
             throw TokenException.required();
         }
 
-        return (TokenPayload) authentication.getPrincipal();
+        try {
+            return (TokenPayload) authentication.getPrincipal();
+        } catch (ClassCastException e) {
+            throw AppException.systemIntegrity("SecurityContextService must be" +
+                    " used in a authenticated context, check authenticated routes in SecurityConfig."
+            );
+        }
     }
 }
