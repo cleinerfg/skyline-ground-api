@@ -30,7 +30,10 @@ public enum ErrorCode {
     // Token
     TOKEN_REQUIRED(HttpStatus.UNAUTHORIZED, ErrorCategory.SECURITY),
     TOKEN_INVALID(HttpStatus.UNAUTHORIZED, ErrorCategory.SECURITY),
-    TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, ErrorCategory.SECURITY);
+    TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, ErrorCategory.SECURITY),
+
+    // Project
+    PROJECT_NAME_ALREADY_EXISTS(HttpStatus.CONFLICT, ErrorCategory.BUSINESS_RULE_VIOLATION);
 
     private final HttpStatus status;
     private final ErrorCategory category;
