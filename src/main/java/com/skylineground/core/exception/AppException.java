@@ -50,8 +50,13 @@ public class AppException extends RuntimeException {
                 "The period from '%s' to '%s' is not valid".formatted(startPeriod, endPeriod));
     }
 
-    public static AppException systemIntegrity(String message) {
-        log.error(message);
+    public static AppException systemIntegrity(Exception ex) {
+        log.error(ex.getMessage(), ex);
         return new AppException(ErrorCode.SYSTEM_INTEGRITY_ERROR, "System Integrity Violation");
+    }
+
+    public static AppException systemIntegrity(Exception ex, String logMessage) {
+        log.error(logMessage);
+        return systemIntegrity(ex);
     }
 }
