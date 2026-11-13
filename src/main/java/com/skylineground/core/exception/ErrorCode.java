@@ -17,6 +17,10 @@ public enum ErrorCode {
     INVALID_PERIOD(HttpStatus.BAD_REQUEST, ErrorCategory.INVALID_INPUT),
     RESOURCE_NOT_FOUND(HttpStatus.NOT_FOUND, ErrorCategory.NOT_FOUND),
 
+    // Routing
+    ROUTE_NOT_FOUND(HttpStatus.NOT_FOUND, ErrorCategory.ROUTING),
+    METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, ErrorCategory.ROUTING),
+
     // Identity
     EMAIL_ALREADY_EXISTS(HttpStatus.CONFLICT, ErrorCategory.BUSINESS_RULE_VIOLATION),
     INVALID_EMAIL(HttpStatus.BAD_REQUEST, ErrorCategory.INVALID_INPUT),
