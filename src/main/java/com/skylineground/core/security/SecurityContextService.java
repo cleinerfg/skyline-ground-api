@@ -19,7 +19,7 @@ public class SecurityContextService {
         try {
             return (TokenPayload) authentication.getPrincipal();
         } catch (ClassCastException e) {
-            throw AppException.systemIntegrity("SecurityContextService must be" +
+            throw AppException.systemIntegrity(e, "SecurityContextService must be" +
                     " used in a authenticated context, check authenticated routes in SecurityConfig."
             );
         }

@@ -13,7 +13,7 @@ public class ExceptionResolver {
     private final ProblemDetailFactory problemDetailFactory;
 
     public ProblemDetail resolve(Exception ex) {
-        var appException = AppException.systemIntegrity(ex.getMessage());
+        var appException = AppException.systemIntegrity(ex);
         return problemDetailFactory.create(appException.getErrorCode(), appException.getMessage());
     }
 }

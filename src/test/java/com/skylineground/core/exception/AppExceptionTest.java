@@ -112,7 +112,7 @@ class AppExceptionTest {
     @Test
     void shouldCreateSystemIntegrityException() {
         AppException exception = AppException.systemIntegrity(
-                "Database integrity violation"
+                new Exception()
         );
 
         assertThat(exception.getErrorCode())

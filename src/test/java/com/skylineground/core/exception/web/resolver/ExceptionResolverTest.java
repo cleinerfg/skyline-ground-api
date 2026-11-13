@@ -30,7 +30,7 @@ class ExceptionResolverTest {
     @BeforeEach
     void setUp() {
         inputException = new Exception("Test error message");
-        expectedAppException = AppException.systemIntegrity(inputException.getMessage());
+        expectedAppException = AppException.systemIntegrity(inputException);
     }
 
     @Test
