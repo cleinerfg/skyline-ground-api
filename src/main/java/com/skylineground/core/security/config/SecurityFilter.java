@@ -1,5 +1,6 @@
 package com.skylineground.core.security.config;
 
+import com.skylineground.core.security.jwt.TokenException;
 import com.skylineground.core.security.jwt.TokenPayload;
 import com.skylineground.core.security.jwt.TokenService;
 import jakarta.servlet.FilterChain;
@@ -20,6 +21,11 @@ import java.util.Collections;
 @RequiredArgsConstructor
 public class SecurityFilter extends OncePerRequestFilter {
 
+    /**
+     * Carries the token validation failure to the AuthenticationEntryPoint.
+     */
+    public static final String AUTH_EXCEPTION_ATTRIBUTE = "SKYLINE_SECURITY_AUTH_EXCEPTION";
+
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String BEARER_PREFIX = "Bearer ";
 
@@ -31,20 +37,26 @@ public class SecurityFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
-
         String token = extractToken(request);
 
         if (token != null) {
-            TokenPayload tokenPayload = tokenService.validate(token);
+            try {
+                TokenPayload tokenPayload = tokenService.validate(token);
 
-            var authentication = new UsernamePasswordAuthenticationToken(
-                    tokenPayload,
-                    null,
-                    Collections.emptyList()
-            );
+                var authentication = new UsernamePasswordAuthenticationToken(
+                        tokenPayload,
+                        null,
+                        Collections.emptyList()
+                );
 
-            SecurityContextHolder.getContext()
-                    .setAuthentication(authentication);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            } catch (TokenException e) {
+                // Never write the response here: the route may be public.
+                // Store the failure instead; the entry point only uses it
+                // if the route requires authentication.
+                SecurityContextHolder.clearContext();
+                request.setAttribute(AUTH_EXCEPTION_ATTRIBUTE, e);
+            }
         }
 
         filterChain.doFilter(request, response);
@@ -56,7 +68,6 @@ public class SecurityFilter extends OncePerRequestFilter {
         if (authHeader != null && authHeader.startsWith(BEARER_PREFIX)) {
             return authHeader.substring(BEARER_PREFIX.length());
         }
-
         return null;
     }
 }
