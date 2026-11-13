@@ -18,7 +18,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class InvalidParamResolverTest {
+class InvalidParameterResolverTest {
 
     private enum TestStatus {
         ACTIVE,
@@ -29,10 +29,10 @@ class InvalidParamResolverTest {
     private ProblemDetailFactory problemDetailFactory;
 
     @InjectMocks
-    private InvalidParamResolver resolver;
+    private InvalidParameterResolver resolver;
 
     @Test
-    void shouldResolveInvalidParam() {
+    void shouldResolveInvalidParameter() {
         var exception = new MethodArgumentTypeMismatchException(
                 "invalid",
                 Integer.class,
@@ -71,7 +71,7 @@ class InvalidParamResolverTest {
     }
 
     @Test
-    void shouldResolveInvalidParamWhenRequiredTypeIsNull() {
+    void shouldResolveInvalidParameterWhenRequiredTypeIsNull() {
         var exception = new MethodArgumentTypeMismatchException(
                 "invalid",
                 null,

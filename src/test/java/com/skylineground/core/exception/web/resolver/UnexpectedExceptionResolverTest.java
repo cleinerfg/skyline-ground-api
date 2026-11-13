@@ -16,13 +16,13 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class ExceptionResolverTest {
+class UnexpectedExceptionResolverTest {
 
     @Mock
     private ProblemDetailFactory problemDetailFactory;
 
     @InjectMocks
-    private ExceptionResolver resolver;
+    private UnexpectedExceptionResolver resolver;
 
     private Exception inputException;
     private AppException expectedAppException;
@@ -34,7 +34,7 @@ class ExceptionResolverTest {
     }
 
     @Test
-    void shouldResolveException() {
+    void shouldResolveUnexpectedException() {
         ProblemDetail expectedProblemDetail = ProblemDetail.forStatusAndDetail(
                 ErrorCode.SYSTEM_INTEGRITY_ERROR.getStatus(),
                 expectedAppException.getMessage()

@@ -11,7 +11,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 @Component
 @RequiredArgsConstructor
-public class InvalidParamResolver {
+public class InvalidParameterResolver {
 
     private final ProblemDetailFactory problemDetailFactory;
 

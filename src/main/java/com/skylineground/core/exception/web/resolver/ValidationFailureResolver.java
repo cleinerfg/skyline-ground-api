@@ -9,7 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 
 @RequiredArgsConstructor
 @Component
-public class MethodArgumentNotValidResolver {
+public class ValidationFailureResolver {
 
     private final ValidationFailHandler validationFailHandler;
     private final InvalidQueryParamsHandler invalidQueryParamsHandler;

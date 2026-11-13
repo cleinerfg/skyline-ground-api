@@ -19,27 +19,27 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 public class RestExceptionHandler {
 
     private final InvalidJsonResolver invalidJsonResolver;
-    private final InvalidParamResolver invalidParamResolver;
-    private final MethodArgumentNotValidResolver methodArgumentNotValidResolver;
+    private final InvalidParameterResolver invalidParameterResolver;
+    private final ValidationFailureResolver validationFailureResolver;
     private final RouteNotFoundResolver routeNotFoundResolver;
     private final MethodNotAllowedResolver methodNotAllowedResolver;
     private final AppExceptionResolver appExceptionResolver;
     private final InsufficientAuthenticationResolver insufficientAuthenticationResolver;
-    private final ExceptionResolver exceptionResolver;
+    private final UnexpectedExceptionResolver unexpectedExceptionResolver;
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ProblemDetail handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
+    public ProblemDetail handleInvalidJson(HttpMessageNotReadableException ex) {
         return invalidJsonResolver.resolve(ex);
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ProblemDetail handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
-        return invalidParamResolver.resolve(ex);
+    public ProblemDetail handleInvalidParameter(MethodArgumentTypeMismatchException ex) {
+        return invalidParameterResolver.resolve(ex);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ProblemDetail handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
-        return methodArgumentNotValidResolver.resolve(ex);
+    public ProblemDetail handleValidationFailure(MethodArgumentNotValidException ex) {
+        return validationFailureResolver.resolve(ex);
     }
 
     @ExceptionHandler({NoResourceFoundException.class, NoHandlerFoundException.class})
@@ -48,7 +48,7 @@ public class RestExceptionHandler {
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public ProblemDetail handleHttpRequestMethodNotSupported() {
+    public ProblemDetail handleMethodNotAllowed() {
         return methodNotAllowedResolver.resolve();
     }
 
@@ -58,12 +58,12 @@ public class RestExceptionHandler {
     }
 
     @ExceptionHandler(InsufficientAuthenticationException.class)
-    public ProblemDetail handleInsufficientAuthenticationException() {
+    public ProblemDetail handleInsufficientAuthentication() {
         return insufficientAuthenticationResolver.resolve();
     }
 
     @ExceptionHandler(Exception.class)
-    public ProblemDetail handleException(Exception ex) {
-        return exceptionResolver.resolve(ex);
+    public ProblemDetail handleUnexpectedException(Exception ex) {
+        return unexpectedExceptionResolver.resolve(ex);
     }
 }

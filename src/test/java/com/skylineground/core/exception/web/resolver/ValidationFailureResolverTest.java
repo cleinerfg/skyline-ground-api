@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class MethodArgumentNotValidResolverTest {
+class ValidationFailureResolverTest {
 
     @Mock
     private ValidationFailHandler validationFailHandler;
@@ -34,7 +34,7 @@ class MethodArgumentNotValidResolverTest {
     private BindingResult bindingResult;
 
     @InjectMocks
-    private MethodArgumentNotValidResolver resolver;
+    private ValidationFailureResolver resolver;
 
     @Test
     void shouldResolveInvalidQueryParams() {

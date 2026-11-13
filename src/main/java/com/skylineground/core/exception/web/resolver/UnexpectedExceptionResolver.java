@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class ExceptionResolver {
+public class UnexpectedExceptionResolver {
 
     private final ProblemDetailFactory problemDetailFactory;
 
