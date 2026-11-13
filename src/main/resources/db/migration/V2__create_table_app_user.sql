@@ -11,6 +11,7 @@ CREATE TABLE app_user
     created_at    TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at    TIMESTAMPTZ,
 
-    CONSTRAINT uk_app_user_email UNIQUE (email),
     CONSTRAINT uk_app_user_external_id UNIQUE (external_id)
 );
+
+CREATE UNIQUE INDEX uk_app_user_email ON app_user (lower(email));
