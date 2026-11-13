@@ -17,7 +17,6 @@ public class ProjectMapper {
                 .type(request.type())
                 .startDate(request.startDate())
                 .expectedEndDate(request.expectedEndDate())
-                .status(request.status())
                 .createdBy(creator)
                 .build();
     }
@@ -28,10 +27,10 @@ public class ProjectMapper {
                 .name(entity.getName())
                 .description(entity.getDescription())
                 .type(entity.getType())
+                .status(entity.getStatus())
                 .startDate(entity.getStartDate())
                 .expectedEndDate(entity.getExpectedEndDate())
                 .endDate(entity.getEndDate())
-                .status(entity.getStatus())
                 .createdBy(createdBySummary)
                 .build();
     }

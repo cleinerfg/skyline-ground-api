@@ -11,13 +11,13 @@ import java.util.UUID;
 @Builder
 public record ProjectResponse(
         UUID externalId,
-        String description,
         String name,
+        String description,
         ProjectType type,
+        ProjectStatus status,
         LocalDate startDate,
         LocalDate expectedEndDate,
         LocalDate endDate,
-        ProjectStatus status,
         UserSummary createdBy
 ) {
 }
