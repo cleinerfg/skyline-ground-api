@@ -9,20 +9,27 @@ CREATE TABLE project
     start_date        DATE           NOT NULL,
     expected_end_date DATE,
     end_date          DATE,
-    created_by        BIGINT         NOT NULL,
+    creator_id        BIGINT         NOT NULL,
     created_at        TIMESTAMPTZ    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at        TIMESTAMPTZ,
 
     CONSTRAINT uk_project_external_id UNIQUE (external_id),
-    CONSTRAINT uk_project_name UNIQUE (name),
 
-    CONSTRAINT fk_project_user FOREIGN KEY (created_by)
+    CONSTRAINT fk_project_creator FOREIGN KEY (creator_id)
         REFERENCES app_user (id)
-        ON DELETE CASCADE,
+        ON DELETE RESTRICT,
 
-    CONSTRAINT chk_expected_end_date CHECK (expected_end_date >= start_date),
-    CONSTRAINT chk_end_date CHECK (end_date >= start_date)
+    CONSTRAINT chk_project_dates CHECK (
+        (expected_end_date IS NULL OR expected_end_date >= start_date)
+        AND (end_date IS NULL OR end_date >= start_date)
+    ),
+
+    CONSTRAINT chk_project_end_date_matches_status CHECK (
+        (status IN ('COMPLETED', 'CANCELED')) = (end_date IS NOT NULL)
+    )
 );
 
-CREATE INDEX idx_project_status ON project (status);
-CREATE INDEX idx_project_type ON project (type);
+CREATE INDEX idx_project_status_type ON project (status, type);
+
+CREATE UNIQUE INDEX uk_project_creator_name_type_start
+    ON project (creator_id, lower(name), type, start_date);
