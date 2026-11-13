@@ -1,14 +1,17 @@
 services:
-    db:
-        image: postgres:15-alpine
-        container_name: skyline-ground-postgres
-        restart: always
-        shm_size: 128mb
-        environment:
-          POSTGRES_USER: ${DB_POSTGRES_USERNAME}
-          POSTGRES_PASSWORD: ${DB_POSTGRES_PASSWORD}
-          POSTGRES_DB: skyline-ground
-        ports:
-        - '5432:5432'
-        volumes:
-        - ./data/postgres:/var/lib/postgresql/data
+  db:
+    image: postgres:15-alpine
+    container_name: skyline-ground-postgres
+    restart: always
+    shm_size: 128mb
+    environment:
+      POSTGRES_USER: ${DB_POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${DB_POSTGRES_PASSWORD}
+      POSTGRES_DB: skyline-ground
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
