@@ -25,6 +25,7 @@ public class RestExceptionHandler {
     private final MethodNotAllowedResolver methodNotAllowedResolver;
     private final AppExceptionResolver appExceptionResolver;
     private final InsufficientAuthenticationResolver insufficientAuthenticationResolver;
+    private final ExceptionResolver exceptionResolver;
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ProblemDetail handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
@@ -59,5 +60,10 @@ public class RestExceptionHandler {
     @ExceptionHandler(InsufficientAuthenticationException.class)
     public ProblemDetail handleInsufficientAuthenticationException() {
         return insufficientAuthenticationResolver.resolve();
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ProblemDetail handleException(Exception ex) {
+        return exceptionResolver.resolve(ex);
     }
 }
