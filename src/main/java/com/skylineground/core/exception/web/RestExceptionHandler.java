@@ -10,6 +10,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @RequiredArgsConstructor
 @RestControllerAdvice
@@ -18,6 +20,8 @@ public class RestExceptionHandler {
     private final InvalidJsonResolver invalidJsonResolver;
     private final InvalidParamResolver invalidParamResolver;
     private final MethodArgumentNotValidResolver methodArgumentNotValidResolver;
+    private final RouteNotFoundResolver routeNotFoundResolver;
+    private final MethodNotAllowedResolver methodNotAllowedResolver;
     private final AppExceptionResolver appExceptionResolver;
     private final InsufficientAuthenticationResolver insufficientAuthenticationResolver;
 
@@ -34,6 +38,11 @@ public class RestExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ProblemDetail handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
         return methodArgumentNotValidResolver.resolve(ex);
+    }
+
+    @ExceptionHandler({NoResourceFoundException.class, NoHandlerFoundException.class})
+    public ProblemDetail handleRouteNotFound() {
+        return routeNotFoundResolver.resolve();
     }
 
     @ExceptionHandler(AppException.class)
