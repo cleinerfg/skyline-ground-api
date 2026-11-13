@@ -8,6 +8,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -36,9 +38,14 @@ public class Project extends BaseEntity {
     private String description;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     @Column(name = "type", nullable = false, columnDefinition = "project_type")
     private ProjectType type;
+
+    @NotNull
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Column(name = "status", nullable = false, columnDefinition = "project_status")
+    private ProjectStatus status = ProjectStatus.PLANNING;
 
     @NotNull
     @Column(name = "start_date", nullable = false)
@@ -51,11 +58,6 @@ public class Project extends BaseEntity {
     private LocalDate endDate;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false, columnDefinition = "project_status")
-    private ProjectStatus status = ProjectStatus.PLANNING;
-
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", nullable = false)
     @Setter(AccessLevel.NONE)
@@ -64,21 +66,19 @@ public class Project extends BaseEntity {
     @Builder
     public Project(
             UUID externalId,
-            String description,
             String name,
+            String description,
             ProjectType type,
             LocalDate startDate,
             LocalDate expectedEndDate,
-            ProjectStatus status,
             User createdBy
     ) {
         this.externalId = externalId;
-        this.description = description;
         this.name = name;
+        this.description = description;
         this.type = type;
         this.startDate = startDate;
         this.expectedEndDate = expectedEndDate;
-        this.status = status;
         this.createdBy = createdBy;
     }
 }
