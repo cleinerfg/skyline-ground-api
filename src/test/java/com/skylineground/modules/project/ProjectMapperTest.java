@@ -18,14 +18,14 @@ import static org.mockito.Mockito.when;
 
 class ProjectMapperTest {
 
+    private static final ProjectStatus DEFAULT_STATUS = ProjectStatus.PLANNING;
+
     private final ProjectMapper mapper = new ProjectMapper();
 
     @Test
     void shouldMapRequestToEntity() {
         User creator = mock(User.class);
-
         ProjectType type = ProjectType.BUILD;
-        ProjectStatus status = ProjectStatus.ACTIVE;
 
         LocalDate startDate = LocalDate.of(2026, 1, 10);
         LocalDate expectedEndDate = LocalDate.of(2026, 6, 10);
@@ -36,7 +36,6 @@ class ProjectMapperTest {
                 .type(type)
                 .startDate(startDate)
                 .expectedEndDate(expectedEndDate)
-                .status(status)
                 .build();
 
         Project result = mapper.toEntity(request, creator);
@@ -44,9 +43,9 @@ class ProjectMapperTest {
         assertThat(result.getName()).isEqualTo(request.name());
         assertThat(result.getDescription()).isEqualTo(request.description());
         assertThat(result.getType()).isEqualTo(request.type());
+        assertThat(result.getStatus()).isEqualTo(DEFAULT_STATUS);
         assertThat(result.getStartDate()).isEqualTo(request.startDate());
         assertThat(result.getExpectedEndDate()).isEqualTo(request.expectedEndDate());
-        assertThat(result.getStatus()).isEqualTo(request.status());
         assertThat(result.getCreatedBy()).isSameAs(creator);
     }
 
@@ -78,10 +77,10 @@ class ProjectMapperTest {
         assertThat(result.name()).isEqualTo("Project Alpha");
         assertThat(result.description()).isEqualTo("Project description");
         assertThat(result.type()).isEqualTo(type);
+        assertThat(result.status()).isEqualTo(status);
         assertThat(result.startDate()).isEqualTo(startDate);
         assertThat(result.expectedEndDate()).isEqualTo(expectedEndDate);
         assertThat(result.endDate()).isEqualTo(endDate);
-        assertThat(result.status()).isEqualTo(status);
         assertThat(result.createdBy()).isSameAs(createdBySummary);
     }
 }
