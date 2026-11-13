@@ -4,6 +4,8 @@ import com.skylineground.core.exception.ErrorCode;
 import org.springframework.http.ProblemDetail;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
+
 @Component
 public class ProblemDetailFactory {
 
@@ -11,6 +13,7 @@ public class ProblemDetailFactory {
         var problemDetail = ProblemDetail.forStatusAndDetail(errorCode.getStatus(), message);
         problemDetail.setTitle(errorCode.name());
         problemDetail.setProperty("category", errorCode.getCategory());
+        problemDetail.setProperty("timestamp", Instant.now().toString());
         return problemDetail;
     }
 }

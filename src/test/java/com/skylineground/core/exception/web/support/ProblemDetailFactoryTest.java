@@ -1,6 +1,7 @@
 package com.skylineground.core.exception.web.support;
 
 import com.skylineground.core.exception.ErrorCode;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.springframework.http.ProblemDetail;
@@ -34,5 +35,9 @@ class ProblemDetailFactoryTest {
 
         assertThat(problemDetail.getProperties())
                 .containsEntry("category", errorCode.getCategory());
+
+        Assertions.assertNotNull(problemDetail.getProperties());
+        assertThat(problemDetail.getProperties().get("timestamp"))
+                .isNotNull();
     }
 }
