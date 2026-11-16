@@ -2,6 +2,8 @@ package com.skylineground.core.exception.web;
 
 import com.skylineground.core.exception.AppException;
 import com.skylineground.core.exception.web.resolver.*;
+import com.skylineground.modules.project.exception.ProjectAlreadyExistsException;
+import com.skylineground.modules.project.exception.ProjectAlreadyExistsResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -23,6 +25,7 @@ public class RestExceptionHandler {
     private final ValidationFailureResolver validationFailureResolver;
     private final RouteNotFoundResolver routeNotFoundResolver;
     private final MethodNotAllowedResolver methodNotAllowedResolver;
+    private final ProjectAlreadyExistsResolver projectAlreadyExistsResolver;
     private final AppExceptionResolver appExceptionResolver;
     private final InsufficientAuthenticationResolver insufficientAuthenticationResolver;
     private final UnexpectedExceptionResolver unexpectedExceptionResolver;
@@ -50,6 +53,11 @@ public class RestExceptionHandler {
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ProblemDetail handleMethodNotAllowed() {
         return methodNotAllowedResolver.resolve();
+    }
+
+    @ExceptionHandler(ProjectAlreadyExistsException.class)
+    public ProblemDetail handleProjectAlreadyExists(ProjectAlreadyExistsException ex) {
+        return projectAlreadyExistsResolver.resolve(ex);
     }
 
     @ExceptionHandler(AppException.class)
