@@ -18,6 +18,6 @@ public record ProjectResponse(
         LocalDate startDate,
         LocalDate expectedEndDate,
         LocalDate endDate,
-        UserSummary createdBy
+        UserSummary creator
 ) {
 }

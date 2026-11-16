@@ -46,13 +46,13 @@ class ProjectMapperTest {
         assertThat(result.getStatus()).isEqualTo(DEFAULT_STATUS);
         assertThat(result.getStartDate()).isEqualTo(request.startDate());
         assertThat(result.getExpectedEndDate()).isEqualTo(request.expectedEndDate());
-        assertThat(result.getCreatedBy()).isSameAs(creator);
+        assertThat(result.getCreator()).isSameAs(creator);
     }
 
     @Test
     void shouldMapEntityToResponse() {
         Project entity = mock(Project.class);
-        UserSummary createdBySummary = mock(UserSummary.class);
+        UserSummary creatorSummary = mock(UserSummary.class);
 
         UUID externalId = UUID.randomUUID();
         ProjectType type = ProjectType.PURCHASE;
@@ -71,7 +71,7 @@ class ProjectMapperTest {
         when(entity.getEndDate()).thenReturn(endDate);
         when(entity.getStatus()).thenReturn(status);
 
-        ProjectResponse result = mapper.toResponse(entity, createdBySummary);
+        ProjectResponse result = mapper.toResponse(entity, creatorSummary);
 
         assertThat(result.externalId()).isEqualTo(externalId);
         assertThat(result.name()).isEqualTo("Project Alpha");
@@ -81,6 +81,6 @@ class ProjectMapperTest {
         assertThat(result.startDate()).isEqualTo(startDate);
         assertThat(result.expectedEndDate()).isEqualTo(expectedEndDate);
         assertThat(result.endDate()).isEqualTo(endDate);
-        assertThat(result.createdBy()).isSameAs(createdBySummary);
+        assertThat(result.creator()).isSameAs(creatorSummary);
     }
 }

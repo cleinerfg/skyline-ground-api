@@ -17,11 +17,11 @@ public class ProjectMapper {
                 .type(request.type())
                 .startDate(request.startDate())
                 .expectedEndDate(request.expectedEndDate())
-                .createdBy(creator)
+                .creator(creator)
                 .build();
     }
 
-    public ProjectResponse toResponse(Project entity, UserSummary createdBySummary) {
+    public ProjectResponse toResponse(Project entity, UserSummary creatorSummary) {
         return ProjectResponse.builder()
                 .externalId(entity.getExternalId())
                 .name(entity.getName())
@@ -31,7 +31,7 @@ public class ProjectMapper {
                 .startDate(entity.getStartDate())
                 .expectedEndDate(entity.getExpectedEndDate())
                 .endDate(entity.getEndDate())
-                .createdBy(createdBySummary)
+                .creator(creatorSummary)
                 .build();
     }
 }
