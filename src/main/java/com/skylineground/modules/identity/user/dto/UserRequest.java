@@ -1,5 +1,8 @@
 package com.skylineground.modules.identity.user.dto;
 
+import lombok.Builder;
+
+@Builder
 public record UserRequest(
         String name,
         String email,
