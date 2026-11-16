@@ -26,7 +26,7 @@ public class Project extends BaseEntity {
     private Long id;
 
     @NotNull
-    @Column(name = "external_id", nullable = false, updatable = false, columnDefinition = "UUID")
+    @Column(name = "external_id", nullable = false, unique = true, updatable = false)
     private UUID externalId;
 
     @NotNull
@@ -34,7 +34,7 @@ public class Project extends BaseEntity {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "description", columnDefinition = "TEXT")
+    @Column(name = "description")
     private String description;
 
     @NotNull
