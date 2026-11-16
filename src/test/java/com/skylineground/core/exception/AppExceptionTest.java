@@ -1,8 +1,12 @@
 package com.skylineground.core.exception;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,68 +26,27 @@ class AppExceptionTest {
                 .isEqualTo("Invalid JSON");
     }
 
-    @Test
-    void shouldCreateInvalidJsonException() {
-        AppException exception = AppException.invalidJson();
-
+    @ParameterizedTest
+    @MethodSource("exceptionFactoryCases")
+    void shouldCreateExceptionWithExpectedErrorCode(
+            AppException exception,
+            ErrorCode expectedErrorCode
+    ) {
         assertThat(exception.getErrorCode())
-                .isEqualTo(ErrorCode.INVALID_JSON);
+                .isEqualTo(expectedErrorCode);
     }
 
-    @Test
-    void shouldCreateInvalidParamException() {
-        AppException exception = AppException.invalidParam();
-
-        assertThat(exception.getErrorCode())
-                .isEqualTo(ErrorCode.INVALID_PARAM);
-    }
-
-    @Test
-    void shouldCreateInvalidQueryParamsException() {
-        AppException exception = AppException.invalidQueryParams();
-
-        assertThat(exception.getErrorCode())
-                .isEqualTo(ErrorCode.INVALID_QUERY_PARAMS);
-    }
-
-    @Test
-    void shouldCreateValidationFailException() {
-        AppException exception = AppException.validationFail();
-
-        assertThat(exception.getErrorCode())
-                .isEqualTo(ErrorCode.VALIDATION_FAIL);
-    }
-
-    @Test
-    void shouldCreateResourceNotFoundException() {
+    private static Stream<Arguments> exceptionFactoryCases() {
         UUID externalId = UUID.randomUUID();
-        AppException exception = AppException.resourceNotFound(
-                "User",
-                externalId
+
+        return Stream.of(
+                Arguments.of(AppException.invalidJson(), ErrorCode.INVALID_JSON),
+                Arguments.of(AppException.invalidParam(), ErrorCode.INVALID_PARAM),
+                Arguments.of(AppException.invalidQueryParams(), ErrorCode.INVALID_QUERY_PARAMS),
+                Arguments.of(AppException.validationFail(), ErrorCode.VALIDATION_FAIL),
+                Arguments.of(AppException.resourceNotFound("User", externalId), ErrorCode.RESOURCE_NOT_FOUND),
+                Arguments.of(AppException.invalidPeriod("2026-01-01", "2025-01-01"), ErrorCode.INVALID_PERIOD),
+                Arguments.of(AppException.systemIntegrity(new Exception()), ErrorCode.SYSTEM_INTEGRITY_ERROR)
         );
-
-        assertThat(exception.getErrorCode())
-                .isEqualTo(ErrorCode.RESOURCE_NOT_FOUND);
-    }
-
-    @Test
-    void shouldCreateInvalidPeriodException() {
-        AppException exception = AppException.invalidPeriod(
-                "2026-01-01",
-                "2025-01-01"
-        );
-
-        assertThat(exception.getErrorCode())
-                .isEqualTo(ErrorCode.INVALID_PERIOD);
-    }
-
-    @Test
-    void shouldCreateSystemIntegrityException() {
-        AppException exception = AppException.systemIntegrity(
-                new Exception()
-        );
-
-        assertThat(exception.getErrorCode())
-                .isEqualTo(ErrorCode.SYSTEM_INTEGRITY_ERROR);
     }
 }
