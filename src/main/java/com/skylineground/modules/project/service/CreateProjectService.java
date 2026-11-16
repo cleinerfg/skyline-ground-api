@@ -48,9 +48,7 @@ public class CreateProjectService {
 
         User creator = userReferenceProvider.provide(creatorExternalId);
 
-        Project project = mapper.toEntity(request, creator);
-        project.setExternalId(uuidGenerator.generate());
-
+        Project project = mapper.toEntity(uuidGenerator.generate(), request, creator);
         Project savedProject = projectRepository.save(project);
 
         UserSummary creatorSummary = userRepository

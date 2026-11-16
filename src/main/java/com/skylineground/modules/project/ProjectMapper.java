@@ -7,11 +7,14 @@ import com.skylineground.modules.project.dto.ProjectResponse;
 import com.skylineground.modules.project.persistence.Project;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
 public class ProjectMapper {
 
-    public Project toEntity(ProjectRequest request, User creator) {
+    public Project toEntity(UUID externalId, ProjectRequest request, User creator) {
         return Project.builder()
+                .externalId(externalId)
                 .name(request.name())
                 .description(request.description())
                 .type(request.type())

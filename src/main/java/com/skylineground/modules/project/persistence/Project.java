@@ -27,6 +27,7 @@ public class Project extends BaseEntity {
 
     @NotNull
     @Column(name = "external_id", nullable = false, unique = true, updatable = false)
+    @Setter(AccessLevel.NONE)
     private UUID externalId;
 
     @NotNull
