@@ -24,6 +24,7 @@ class ProjectMapperTest {
 
     @Test
     void shouldMapRequestToEntity() {
+        UUID externalId = UUID.randomUUID();
         User creator = mock(User.class);
         ProjectType type = ProjectType.BUILD;
 
@@ -38,8 +39,9 @@ class ProjectMapperTest {
                 .expectedEndDate(expectedEndDate)
                 .build();
 
-        Project result = mapper.toEntity(request, creator);
+        Project result = mapper.toEntity(externalId, request, creator);
 
+        assertThat(result.getExternalId()).isEqualTo(externalId);
         assertThat(result.getName()).isEqualTo(request.name());
         assertThat(result.getDescription()).isEqualTo(request.description());
         assertThat(result.getType()).isEqualTo(request.type());

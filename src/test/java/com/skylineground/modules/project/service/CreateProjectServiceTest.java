@@ -54,12 +54,12 @@ class CreateProjectServiceTest {
         UUID creatorExternalId = UUID.randomUUID();
         UUID generatedExternalId = UUID.randomUUID();
         LocalDate startDate = LocalDate.now();
-        LocalDate expectedEndDate = LocalDate.now().plusDays(10);
+        LocalDate expectedEndDate = startDate.plusDays(10);
 
         ProjectRequest request = createProjectRequest(startDate, expectedEndDate);
 
         User creatorMock = mock(User.class);
-        Project unmappedProject = new Project();
+        Project project = new Project();
         Project savedProject = new Project();
         UserSummary creatorSummaryMock = mock(UserSummary.class);
         ProjectResponse expectedResponse = mock(ProjectResponse.class);
@@ -68,13 +68,13 @@ class CreateProjectServiceTest {
                 creatorExternalId,
                 request.name(),
                 request.type(),
-                request.startDate())
-        ).thenReturn(Optional.empty());
+                request.startDate()
+        )).thenReturn(Optional.empty());
 
-        when(userReferenceProvider.provide(creatorExternalId)).thenReturn(creatorMock);
-        when(mapper.toEntity(request, creatorMock)).thenReturn(unmappedProject);
         when(uuidGenerator.generate()).thenReturn(generatedExternalId);
-        when(projectRepository.save(unmappedProject)).thenReturn(savedProject);
+        when(userReferenceProvider.provide(creatorExternalId)).thenReturn(creatorMock);
+        when(mapper.toEntity(generatedExternalId, request, creatorMock)).thenReturn(project);
+        when(projectRepository.save(project)).thenReturn(savedProject);
         when(userRepository.findSummaryByExternalId(creatorExternalId)).thenReturn(creatorSummaryMock);
         when(mapper.toResponse(savedProject, creatorSummaryMock)).thenReturn(expectedResponse);
 
@@ -83,19 +83,19 @@ class CreateProjectServiceTest {
         assertThat(response)
                 .isNotNull()
                 .isEqualTo(expectedResponse);
-        assertThat(unmappedProject.getExternalId())
-                .isEqualTo(generatedExternalId);
 
-        verify(projectRepository)
-                .findDuplicate(
-                        creatorExternalId,
-                        request.name(),
-                        request.type(),
-                        request.startDate()
-                );
+        verify(projectRepository).findDuplicate(
+                creatorExternalId,
+                request.name(),
+                request.type(),
+                request.startDate()
+        );
+        verify(uuidGenerator).generate();
         verify(userReferenceProvider).provide(creatorExternalId);
-        verify(projectRepository).save(unmappedProject);
+        verify(mapper).toEntity(generatedExternalId, request, creatorMock);
+        verify(projectRepository).save(project);
         verify(userRepository).findSummaryByExternalId(creatorExternalId);
+        verify(mapper).toResponse(savedProject, creatorSummaryMock);
     }
 
 
