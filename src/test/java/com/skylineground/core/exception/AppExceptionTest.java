@@ -2,7 +2,6 @@ package com.skylineground.core.exception;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Set;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,37 +20,6 @@ class AppExceptionTest {
 
         assertThat(exception.getMessage())
                 .isEqualTo("Invalid JSON");
-
-        assertThat(exception.getFails()).isEmpty();
-    }
-
-    @Test
-    void shouldAddFailsToException() {
-        AppException exception = AppException.validationFail();
-
-        exception.withFails(Set.of(
-                "NAME_IS_REQUIRED",
-                "EMAIL_IS_INVALID"
-        ));
-
-        assertThat(exception.getFails())
-                .containsExactlyInAnyOrder(
-                        "NAME_IS_REQUIRED",
-                        "EMAIL_IS_INVALID"
-                );
-    }
-
-    @Test
-    void shouldAccumulateFails() {
-        AppException exception = AppException.validationFail()
-                .withFails(Set.of("NAME_IS_REQUIRED"))
-                .withFails(Set.of("EMAIL_IS_INVALID"));
-
-        assertThat(exception.getFails())
-                .containsExactlyInAnyOrder(
-                        "NAME_IS_REQUIRED",
-                        "EMAIL_IS_INVALID"
-                );
     }
 
     @Test

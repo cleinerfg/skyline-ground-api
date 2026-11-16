@@ -13,10 +13,6 @@ public class AppExceptionResolver {
     private final ProblemDetailFactory problemDetailFactory;
 
     public ProblemDetail resolve(AppException ex) {
-        var problemDetail = problemDetailFactory.create(ex.getErrorCode(), ex.getMessage());
-
-        if (!ex.getFails().isEmpty()) problemDetail.setProperty("fails", ex.getFails());
-
-        return problemDetail;
+        return problemDetailFactory.create(ex.getErrorCode(), ex.getMessage());
     }
 }

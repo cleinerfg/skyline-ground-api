@@ -3,8 +3,6 @@ package com.skylineground.core.exception;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
 import java.util.UUID;
 
 @Slf4j
@@ -12,16 +10,10 @@ import java.util.UUID;
 public class AppException extends RuntimeException {
 
     private final transient ErrorCode errorCode;
-    private final transient Set<String> fails = new LinkedHashSet<>();
 
     protected AppException(ErrorCode errorCode, String message) {
         super(message);
         this.errorCode = errorCode;
-    }
-
-    public AppException withFails(Set<String> fails) {
-        this.fails.addAll(fails);
-        return this;
     }
 
     public static AppException invalidJson() {
