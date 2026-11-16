@@ -59,9 +59,9 @@ public class Project extends BaseEntity {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_by", nullable = false)
+    @JoinColumn(name = "creator_id", nullable = false)
     @Setter(AccessLevel.NONE)
-    private User createdBy;
+    private User creator;
 
     @Builder
     public Project(
@@ -71,7 +71,7 @@ public class Project extends BaseEntity {
             ProjectType type,
             LocalDate startDate,
             LocalDate expectedEndDate,
-            User createdBy
+            User creator
     ) {
         this.externalId = externalId;
         this.name = name;
@@ -79,6 +79,6 @@ public class Project extends BaseEntity {
         this.type = type;
         this.startDate = startDate;
         this.expectedEndDate = expectedEndDate;
-        this.createdBy = createdBy;
+        this.creator = creator;
     }
 }
