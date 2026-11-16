@@ -63,8 +63,11 @@ public class CreateProjectService {
     }
 
     private void validateDates(LocalDate startDate, LocalDate expectedEndDate) {
-        if (startDate != null && expectedEndDate != null && startDate.isAfter(expectedEndDate)) {
-            throw AppException.invalidPeriod(startDate.toString(), expectedEndDate.toString());
+        if (startDate.isAfter(expectedEndDate)) {
+            throw AppException.invalidPeriod(
+                    startDate.toString(),
+                    expectedEndDate.toString()
+            );
         }
     }
 }
