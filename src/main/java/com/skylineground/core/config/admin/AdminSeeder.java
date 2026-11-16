@@ -27,9 +27,7 @@ public class AdminSeeder implements CommandLineRunner {
                     .name(props.name())
                     .email(props.email())
                     .password(passwordEncoder.encode(props.password()))
-                    .systemRole(SystemRole.ADMIN)
                     .build();
-
             userRepository.save(admin);
         }
     }
