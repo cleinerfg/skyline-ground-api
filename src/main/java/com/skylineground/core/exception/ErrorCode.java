@@ -33,7 +33,7 @@ public enum ErrorCode {
     TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, ErrorCategory.SECURITY),
 
     // Project
-    PROJECT_NAME_ALREADY_EXISTS(HttpStatus.CONFLICT, ErrorCategory.BUSINESS_RULE_VIOLATION);
+    PROJECT_ALREADY_EXISTS(HttpStatus.CONFLICT, ErrorCategory.BUSINESS_RULE_VIOLATION);
 
     private final HttpStatus status;
     private final ErrorCategory category;
