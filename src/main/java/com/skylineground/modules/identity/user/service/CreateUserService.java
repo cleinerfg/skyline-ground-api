@@ -5,6 +5,7 @@ import com.skylineground.modules.identity.user.UserMapper;
 import com.skylineground.modules.identity.user.dto.UserRequest;
 import com.skylineground.modules.identity.user.dto.UserResponse;
 import com.skylineground.modules.identity.user.exception.EmailAlreadyExistsException;
+import com.skylineground.modules.identity.user.persistence.User;
 import com.skylineground.modules.identity.user.persistence.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,25 +16,24 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CreateUserService {
 
-    private final UserRepository userRepository;
-    private final UserMapper userMapper;
+    private final UserRepository repository;
+    private final UserMapper mapper;
     private final PasswordEncoder passwordEncoder;
     private final UuidGenerator uuidGenerator;
 
     @Transactional
-    public UserResponse execute(UserRequest dto) {
-        if (userRepository.existsByEmail(dto.email())) {
-            throw new EmailAlreadyExistsException(dto.email());
+    public UserResponse execute(UserRequest request) {
+        if (repository.existsByEmail(request.email())) {
+            throw new EmailAlreadyExistsException(request.email());
         }
 
-        var user = userMapper.toEntity(dto);
-        user.setExternalId(uuidGenerator.generate());
+        User user = mapper.toEntity(uuidGenerator.generate(), request);
 
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
 
-        var savedUser = userRepository.save(user);
+        User savedUser = repository.save(user);
 
-        return userMapper.toResponse(savedUser);
+        return mapper.toResponse(savedUser);
     }
 }
