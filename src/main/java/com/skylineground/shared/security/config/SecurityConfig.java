@@ -1,5 +1,6 @@
 package com.skylineground.shared.security.config;
 
+import com.skylineground.modules.identity.user.constant.SystemRole;
 import jakarta.servlet.DispatcherType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -22,6 +23,7 @@ public class SecurityConfig {
 
     private final SecurityFilter securityFilter;
     private final SecurityAuthenticationEntryPoint authenticationEntryPoint;
+    private final SecurityAccessDeniedHandler accessDeniedHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -34,7 +36,7 @@ public class SecurityConfig {
                         .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                        .requestMatchers("/api/v1/cache/**").permitAll() // Just for dev, update after
+                        .requestMatchers("/api/v1/cache/**").hasRole(SystemRole.ADMIN.name())
                         .requestMatchers(
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
@@ -43,7 +45,10 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 // Replaces Spring's default empty 403 with standardized
-                .exceptionHandling(ex -> ex.authenticationEntryPoint(authenticationEntryPoint))
+                .exceptionHandling(
+                        ex -> ex.authenticationEntryPoint(authenticationEntryPoint)
+                                .accessDeniedHandler(accessDeniedHandler)
+                )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
