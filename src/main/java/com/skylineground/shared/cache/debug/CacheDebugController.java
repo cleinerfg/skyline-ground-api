@@ -1,6 +1,7 @@
 package com.skylineground.shared.cache.debug;
 
 import com.skylineground.shared.cache.debug.doc.InspectCacheDoc;
+import com.skylineground.shared.cache.debug.doc.ListCachesDoc;
 import com.skylineground.shared.cache.debug.doc.StatsCacheDoc;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -11,14 +12,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collection;
 import java.util.Map;
 
-/**
- * Development-only endpoint for inspecting cache contents.
- * Should be removed or secured before deploying to production.
- */
 @Tag(name = "Cache Debug",
-        description = "Development-only endpoints for inspecting Caffeine cache entries and statistics")
+        description = "Admin endpoints for inspecting Caffeine cache entries and statistics")
 @RestController
 @RequestMapping("/api/v1/cache")
 @RequiredArgsConstructor
@@ -26,19 +24,27 @@ public class CacheDebugController {
 
     private final CacheManager manager;
 
+    @GetMapping
+    @ListCachesDoc
+    public Collection<String> listAll() {
+        return manager.getCacheNames();
+    }
+
     @GetMapping("/{name}")
     @InspectCacheDoc
     public Map<Object, Object> inspect(@PathVariable String name) {
-        CaffeineCache cache = (CaffeineCache) manager.getCache(name);
-        if (cache == null) return Map.of();
-        return cache.getNativeCache().asMap();
+        if (manager.getCache(name) instanceof CaffeineCache cache) {
+            return cache.getNativeCache().asMap();
+        }
+        return Map.of();
     }
 
     @GetMapping("/{cacheName}/stats")
     @StatsCacheDoc
     public CacheStatsResponse stats(@PathVariable String cacheName) {
-        CaffeineCache cache = (CaffeineCache) manager.getCache(cacheName);
-        if (cache == null) return null;
-        return CacheStatsResponse.from(cache.getNativeCache().stats());
+        if (manager.getCache(cacheName) instanceof CaffeineCache cache) {
+            return CacheStatsResponse.from(cache.getNativeCache().stats());
+        }
+        return null;
     }
 }
