@@ -4,7 +4,7 @@ import com.skylineground.modules.identity.user.dto.UserSummary;
 import com.skylineground.modules.identity.user.persistence.User;
 import com.skylineground.modules.project.constant.ProjectStatus;
 import com.skylineground.modules.project.constant.ProjectType;
-import com.skylineground.modules.project.dto.ProjectRequest;
+import com.skylineground.modules.project.dto.CreateProjectRequest;
 import com.skylineground.modules.project.dto.ProjectResponse;
 import com.skylineground.modules.project.persistence.Project;
 import org.junit.jupiter.api.Test;
@@ -31,7 +31,7 @@ class ProjectMapperTest {
         LocalDate startDate = LocalDate.of(2026, 1, 10);
         LocalDate expectedEndDate = LocalDate.of(2026, 6, 10);
 
-        ProjectRequest request = ProjectRequest.builder()
+        CreateProjectRequest request = CreateProjectRequest.builder()
                 .name("Project Alpha")
                 .description("Project description")
                 .type(type)

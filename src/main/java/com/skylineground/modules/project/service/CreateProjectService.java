@@ -5,7 +5,7 @@ import com.skylineground.modules.identity.user.persistence.User;
 import com.skylineground.modules.identity.user.persistence.UserReferenceProvider;
 import com.skylineground.modules.identity.user.persistence.UserRepository;
 import com.skylineground.modules.project.ProjectMapper;
-import com.skylineground.modules.project.dto.ProjectRequest;
+import com.skylineground.modules.project.dto.CreateProjectRequest;
 import com.skylineground.modules.project.dto.ProjectResponse;
 import com.skylineground.modules.project.exception.ProjectAlreadyExistsException;
 import com.skylineground.modules.project.persistence.Project;
@@ -30,7 +30,7 @@ public class CreateProjectService {
     private final ProjectMapper mapper;
 
     @Transactional
-    public ProjectResponse execute(UUID creatorExternalId, ProjectRequest request) {
+    public ProjectResponse execute(UUID creatorExternalId, CreateProjectRequest request) {
         validateDates(
                 request.startDate(),
                 request.expectedEndDate()

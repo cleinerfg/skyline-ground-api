@@ -1,6 +1,6 @@
 package com.skylineground.modules.project.web;
 
-import com.skylineground.modules.project.dto.ProjectRequest;
+import com.skylineground.modules.project.dto.CreateProjectRequest;
 import com.skylineground.modules.project.dto.ProjectResponse;
 import com.skylineground.modules.project.service.CreateProjectService;
 import com.skylineground.modules.project.web.doc.CreateProjectDoc;
@@ -30,7 +30,7 @@ public class ProjectController {
 
     @CreateProjectDoc
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ProjectResponse> create(@RequestBody @Valid ProjectRequest request) {
+    public ResponseEntity<ProjectResponse> create(@Valid @RequestBody CreateProjectRequest request) {
         TokenPayload payload = securityContextService.getAuthenticatedPayload();
         ProjectResponse response = createService.execute(payload.externalId(), request);
 

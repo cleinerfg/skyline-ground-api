@@ -6,7 +6,7 @@ import com.skylineground.modules.identity.user.persistence.UserReferenceProvider
 import com.skylineground.modules.identity.user.persistence.UserRepository;
 import com.skylineground.modules.project.ProjectMapper;
 import com.skylineground.modules.project.constant.ProjectType;
-import com.skylineground.modules.project.dto.ProjectRequest;
+import com.skylineground.modules.project.dto.CreateProjectRequest;
 import com.skylineground.modules.project.dto.ProjectResponse;
 import com.skylineground.modules.project.exception.ProjectAlreadyExistsException;
 import com.skylineground.modules.project.persistence.Project;
@@ -56,7 +56,7 @@ class CreateProjectServiceTest {
         LocalDate startDate = LocalDate.now();
         LocalDate expectedEndDate = startDate.plusDays(10);
 
-        ProjectRequest request = createProjectRequest(startDate, expectedEndDate);
+        CreateProjectRequest request = createProjectRequest(startDate, expectedEndDate);
 
         User creatorMock = mock(User.class);
         Project project = new Project();
@@ -105,7 +105,7 @@ class CreateProjectServiceTest {
         LocalDate startDate = LocalDate.now().plusDays(10);
         LocalDate expectedEndDate = LocalDate.now();
 
-        ProjectRequest request = createProjectRequest(startDate, expectedEndDate);
+        CreateProjectRequest request = createProjectRequest(startDate, expectedEndDate);
 
         assertThatThrownBy(() -> createProjectService.execute(creatorExternalId, request))
                 .isInstanceOf(AppException.class)
@@ -128,7 +128,7 @@ class CreateProjectServiceTest {
         LocalDate startDate = LocalDate.now();
         LocalDate expectedEndDate = LocalDate.now().plusDays(10);
 
-        ProjectRequest request = createProjectRequest(startDate, expectedEndDate);
+        CreateProjectRequest request = createProjectRequest(startDate, expectedEndDate);
 
         when(projectRepository.findDuplicate(
                 creatorExternalId,
@@ -157,8 +157,8 @@ class CreateProjectServiceTest {
         );
     }
 
-    private ProjectRequest createProjectRequest(LocalDate startDate, LocalDate expectedEndDate) {
-        return ProjectRequest.builder()
+    private CreateProjectRequest createProjectRequest(LocalDate startDate, LocalDate expectedEndDate) {
+        return CreateProjectRequest.builder()
                 .name("Skyline Tower")
                 .type(ProjectType.BUILD)
                 .startDate(startDate)
