@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -50,5 +51,22 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    /**
+     * Provides a dummy UserDetailsService bean to satisfy Spring Security's internal wiring,
+     * preventing default security password generation on startup.
+     * <p>
+     * Since this application is completely stateless and relies on JWT tokens,
+     * authentication is handled via LoginService and SecurityFilter.
+     */
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return username -> {
+            throw new UnsupportedOperationException(
+                    "This application is completely stateless and relies on JWT tokens." +
+                            " UserDetails-based authentication is disabled."
+            );
+        };
     }
 }
