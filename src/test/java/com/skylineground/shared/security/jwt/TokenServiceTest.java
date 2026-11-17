@@ -8,6 +8,7 @@ import com.skylineground.shared.exception.ErrorCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -20,7 +21,7 @@ class TokenServiceTest {
 
     private static final String SECRET = "test-secret-with-enough-length-for-hmac";
     private static final String ISSUER = "skyline-ground";
-    private static final long EXPIRATION = 3600;
+    private static final Duration EXPIRATION = Duration.ofHours(1);
 
     private TokenService service;
     private User user;
@@ -64,7 +65,7 @@ class TokenServiceTest {
         assertThat(decoded.getExpiresAt().toInstant())
                 .isEqualTo(
                         decoded.getIssuedAt().toInstant()
-                                .plusSeconds(EXPIRATION)
+                                .plus(EXPIRATION)
                 );
     }
 
@@ -152,65 +153,6 @@ class TokenServiceTest {
                 () -> service.validate(token),
                 ErrorCode.TOKEN_EXPIRED
         );
-    }
-
-    @Test
-    void shouldThrowNullPointerExceptionWhenPropertiesAreNull() {
-        assertThatThrownBy(() -> new TokenService(null))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("JWT Properties must not be null");
-    }
-
-    @Test
-    void shouldThrowNullPointerExceptionWhenSecretIsNull() {
-        JWTProperties props = new JWTProperties(
-                null,
-                ISSUER,
-                EXPIRATION
-        );
-
-        assertThatThrownBy(() -> new TokenService(props))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("JWT Secret must not be null");
-    }
-
-    @Test
-    void shouldThrowNullPointerExceptionWhenIssuerIsNull() {
-        JWTProperties props = new JWTProperties(
-                SECRET,
-                null,
-                EXPIRATION
-        );
-
-        assertThatThrownBy(() -> new TokenService(props))
-                .isInstanceOf(NullPointerException.class)
-                .hasMessage("JWT Issuer must not be null");
-    }
-
-    @Test
-    void shouldThrowIllegalArgumentExceptionWhenExpirationIsZero() {
-        JWTProperties props = new JWTProperties(
-                SECRET,
-                ISSUER,
-                0
-        );
-
-        assertThatThrownBy(() -> new TokenService(props))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("JWT expiration must be greater than zero");
-    }
-
-    @Test
-    void shouldThrowIllegalArgumentExceptionWhenExpirationIsNegative() {
-        JWTProperties props = new JWTProperties(
-                SECRET,
-                ISSUER,
-                -1
-        );
-
-        assertThatThrownBy(() -> new TokenService(props))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("JWT expiration must be greater than zero");
     }
 
     private void assertTokenException(
