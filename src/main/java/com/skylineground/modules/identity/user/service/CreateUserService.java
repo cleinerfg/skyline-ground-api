@@ -1,7 +1,7 @@
 package com.skylineground.modules.identity.user.service;
 
 import com.skylineground.modules.identity.user.UserMapper;
-import com.skylineground.modules.identity.user.dto.UserRequest;
+import com.skylineground.modules.identity.user.dto.CreateUserRequest;
 import com.skylineground.modules.identity.user.dto.UserResponse;
 import com.skylineground.modules.identity.user.exception.EmailAlreadyExistsException;
 import com.skylineground.modules.identity.user.persistence.User;
@@ -23,7 +23,7 @@ public class CreateUserService {
     private final UuidGenerator uuidGenerator;
 
     @Transactional
-    public UserResponse execute(UserRequest request) {
+    public UserResponse execute(CreateUserRequest request) {
         PasswordValidator.validate(request.password());
 
         if (repository.existsByEmail(request.email())) {

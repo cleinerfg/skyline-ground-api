@@ -5,7 +5,7 @@ import com.skylineground.modules.identity.auth.dto.LoginResponse;
 import com.skylineground.modules.identity.auth.service.LoginService;
 import com.skylineground.modules.identity.auth.web.doc.LoginUserDoc;
 import com.skylineground.modules.identity.auth.web.doc.RegisterUserDoc;
-import com.skylineground.modules.identity.user.dto.UserRequest;
+import com.skylineground.modules.identity.user.dto.CreateUserRequest;
 import com.skylineground.modules.identity.user.dto.UserResponse;
 import com.skylineground.modules.identity.user.service.CreateUserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -28,15 +28,15 @@ public class AuthController {
 
     @RegisterUserDoc
     @PostMapping("/register")
-    public ResponseEntity<UserResponse> register(@RequestBody UserRequest dto) {
-        UserResponse response = createUserService.execute(dto);
+    public ResponseEntity<UserResponse> register(@RequestBody CreateUserRequest request) {
+        UserResponse response = createUserService.execute(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @LoginUserDoc
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest dto) {
-        LoginResponse response = loginService.authenticate(dto);
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
+        LoginResponse response = loginService.authenticate(request);
         return ResponseEntity.ok(response);
     }
 }

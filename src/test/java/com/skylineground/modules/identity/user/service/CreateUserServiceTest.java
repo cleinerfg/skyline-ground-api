@@ -1,7 +1,7 @@
 package com.skylineground.modules.identity.user.service;
 
 import com.skylineground.modules.identity.user.UserMapper;
-import com.skylineground.modules.identity.user.dto.UserRequest;
+import com.skylineground.modules.identity.user.dto.CreateUserRequest;
 import com.skylineground.modules.identity.user.dto.UserResponse;
 import com.skylineground.modules.identity.user.exception.InvalidPasswordException;
 import com.skylineground.modules.identity.user.persistence.User;
@@ -48,7 +48,7 @@ class CreateUserServiceTest {
         String rawPassword = VALID_PASSWORD;
         String encodedPassword = "encodedPassword";
 
-        UserRequest request = createUserRequest();
+        CreateUserRequest request = createUserRequest();
 
         User user = new User();
         user.setPassword(rawPassword);
@@ -81,7 +81,7 @@ class CreateUserServiceTest {
 
     @Test
     void shouldThrowInvalidPasswordExceptionWhenPasswordIsInvalid() {
-        UserRequest request = UserRequest.builder()
+        CreateUserRequest request = CreateUserRequest.builder()
                 .name("Jeremy Gilbert")
                 .email("jeremy@example.com")
                 .password("invalid")
@@ -102,7 +102,7 @@ class CreateUserServiceTest {
 
     @Test
     void shouldThrowEmailAlreadyExistsExceptionWhenEmailExists() {
-        UserRequest request = createUserRequest();
+        CreateUserRequest request = createUserRequest();
 
         when(repository.existsByEmail(request.email())).thenReturn(true);
 
@@ -121,8 +121,8 @@ class CreateUserServiceTest {
         );
     }
 
-    private UserRequest createUserRequest() {
-        return UserRequest.builder()
+    private CreateUserRequest createUserRequest() {
+        return CreateUserRequest.builder()
                 .name("Jeremy Gilbert")
                 .email("jeremy@example.com")
                 .password(VALID_PASSWORD)

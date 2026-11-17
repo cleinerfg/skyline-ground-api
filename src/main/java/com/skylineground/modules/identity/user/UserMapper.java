@@ -1,6 +1,6 @@
 package com.skylineground.modules.identity.user;
 
-import com.skylineground.modules.identity.user.dto.UserRequest;
+import com.skylineground.modules.identity.user.dto.CreateUserRequest;
 import com.skylineground.modules.identity.user.dto.UserResponse;
 import com.skylineground.modules.identity.user.persistence.User;
 import org.springframework.stereotype.Component;
@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Component
 public class UserMapper {
-    public User toEntity(UUID externalId, UserRequest request) {
+    public User toEntity(UUID externalId, CreateUserRequest request) {
         return User.builder()
                 .externalId(externalId)
                 .name(request.name())

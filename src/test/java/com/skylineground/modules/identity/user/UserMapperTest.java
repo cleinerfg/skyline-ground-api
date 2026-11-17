@@ -1,7 +1,7 @@
 package com.skylineground.modules.identity.user;
 
 import com.skylineground.modules.identity.user.constant.SystemRole;
-import com.skylineground.modules.identity.user.dto.UserRequest;
+import com.skylineground.modules.identity.user.dto.CreateUserRequest;
 import com.skylineground.modules.identity.user.dto.UserResponse;
 import com.skylineground.modules.identity.user.persistence.User;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ class UserMapperTest {
     void shouldMapRequestToEntity() {
         UUID externalId = UUID.randomUUID();
 
-        UserRequest request = UserRequest.builder()
+        CreateUserRequest request = CreateUserRequest.builder()
                 .name("Jeremy Gilbert")
                 .email("jeremy@example.com")
                 .password("SecurePassword123!")
