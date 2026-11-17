@@ -4,35 +4,29 @@ import com.skylineground.modules.identity.auth.dto.LoginRequest;
 import com.skylineground.modules.identity.auth.dto.LoginResponse;
 import com.skylineground.modules.identity.auth.exception.InvalidCredentialsException;
 import com.skylineground.modules.identity.user.persistence.User;
+import com.skylineground.modules.identity.user.persistence.UserRepository;
 import com.skylineground.shared.security.jwt.TokenService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class LoginService {
 
+    private final UserRepository userRepository;
     private final TokenService tokenService;
-    private final AuthenticationManager authenticationManager;
+    private final PasswordEncoder passwordEncoder;
 
-    public LoginResponse authenticate(LoginRequest dto) {
-        try {
-            var authToken = new UsernamePasswordAuthenticationToken(
-                    dto.email(),
-                    dto.password()
-            );
-            Authentication authentication = authenticationManager.authenticate(authToken);
+    public LoginResponse authenticate(LoginRequest request) {
+        User user = userRepository.findByEmail(request.email())
+                .orElseThrow(InvalidCredentialsException::new);
 
-            User user = (User) authentication.getPrincipal();
-            String token = tokenService.generate(user);
-
-            return new LoginResponse(token);
-        } catch (BadCredentialsException e) {
+        if (!passwordEncoder.matches(request.password(), user.getPassword())) {
             throw new InvalidCredentialsException();
         }
+
+        String token = tokenService.generate(user);
+        return new LoginResponse(token);
     }
 }
