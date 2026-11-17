@@ -4,30 +4,32 @@ import com.skylineground.modules.identity.auth.dto.LoginRequest;
 import com.skylineground.modules.identity.auth.dto.LoginResponse;
 import com.skylineground.modules.identity.auth.exception.InvalidCredentialsException;
 import com.skylineground.modules.identity.user.persistence.User;
+import com.skylineground.modules.identity.user.persistence.UserRepository;
 import com.skylineground.shared.security.jwt.TokenService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class LoginServiceTest {
 
     @Mock
+    private UserRepository userRepository;
+
+    @Mock
     private TokenService tokenService;
 
     @Mock
-    private AuthenticationManager authenticationManager;
+    private PasswordEncoder passwordEncoder;
 
     @InjectMocks
     private LoginService loginService;
@@ -35,17 +37,17 @@ class LoginServiceTest {
     @Test
     void shouldAuthenticateSuccessfully() {
         String email = "jeremy@example.com";
-        String password = "SecurePassword123!";
+        String password = "SecurePassword35!";
+        String encodedPassword = "encoded-password";
         String expectedToken = "jwt-token";
 
         LoginRequest request = new LoginRequest(email, password);
 
         User user = mock(User.class);
-        Authentication authentication = mock(Authentication.class);
 
-        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
-                .thenReturn(authentication);
-        when(authentication.getPrincipal()).thenReturn(user);
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
+        when(user.getPassword()).thenReturn(encodedPassword);
+        when(passwordEncoder.matches(password, encodedPassword)).thenReturn(true);
         when(tokenService.generate(user)).thenReturn(expectedToken);
 
         LoginResponse response = loginService.authenticate(request);
@@ -55,25 +57,48 @@ class LoginServiceTest {
                 .extracting(LoginResponse::token)
                 .isEqualTo(expectedToken);
 
-        verify(authenticationManager).authenticate(any(UsernamePasswordAuthenticationToken.class));
-        verify(authentication).getPrincipal();
+        verify(userRepository).findByEmail(email);
+        verify(passwordEncoder).matches(password, encodedPassword);
         verify(tokenService).generate(user);
     }
 
     @Test
-    void shouldThrowInvalidCredentialsExceptionWhenCredentialsAreInvalid() {
+    void shouldThrowInvalidCredentialsExceptionWhenUserDoesNotExist() {
+        String email = "jeremy@example.com";
+
         LoginRequest request = new LoginRequest(
-                "jeremy@example.com",
-                "InvalidPassword123!"
+                email,
+                "SecurePassword35!"
         );
 
-        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
-                .thenThrow(new BadCredentialsException("Invalid credentials"));
+        when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> loginService.authenticate(request))
                 .isInstanceOf(InvalidCredentialsException.class);
 
-        verify(authenticationManager).authenticate(any(UsernamePasswordAuthenticationToken.class));
+        verify(userRepository).findByEmail(email);
+        verifyNoInteractions(passwordEncoder, tokenService);
+    }
+
+    @Test
+    void shouldThrowInvalidCredentialsExceptionWhenPasswordIsIncorrect() {
+        String email = "jeremy@example.com";
+        String password = "InvalidPassword123!";
+        String encodedPassword = "encoded-password";
+
+        LoginRequest request = new LoginRequest(email, password);
+
+        User user = mock(User.class);
+
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
+        when(user.getPassword()).thenReturn(encodedPassword);
+        when(passwordEncoder.matches(password, encodedPassword)).thenReturn(false);
+
+        assertThatThrownBy(() -> loginService.authenticate(request))
+                .isInstanceOf(InvalidCredentialsException.class);
+
+        verify(userRepository).findByEmail(email);
+        verify(passwordEncoder).matches(password, encodedPassword);
         verifyNoInteractions(tokenService);
     }
 }
