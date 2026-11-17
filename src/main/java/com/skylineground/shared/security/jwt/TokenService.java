@@ -11,7 +11,6 @@ import com.skylineground.modules.identity.user.persistence.User;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -22,24 +21,11 @@ public class TokenService {
     private final JWTVerifier verifier;
 
     public TokenService(JWTProperties props) {
-        this.props = Objects.requireNonNull(
-                props, "JWT Properties must not be null"
-        );
-
-        Objects.requireNonNull(props.secret(), "JWT Secret must not be null");
-        Objects.requireNonNull(props.issuer(), "JWT Issuer must not be null");
-
-        if (props.expirationSeconds() <= 0) {
-            throw new IllegalArgumentException(
-                    "JWT expiration must be greater than zero"
-            );
-        }
-
+        this.props = props;
         this.algorithm = Algorithm.HMAC256(props.secret());
-
         this.verifier = JWT.require(algorithm)
                 .withIssuer(props.issuer())
-                .acceptLeeway(5)  // Tolerance in seconds for clock drift between servers.
+                .acceptLeeway(5)
                 .build();
     }
 
@@ -51,7 +37,7 @@ public class TokenService {
                 .withSubject(user.getExternalId().toString())
                 .withClaim("systemRole", user.getSystemRole().name())
                 .withIssuedAt(now)
-                .withExpiresAt(now.plusSeconds(props.expirationSeconds()))
+                .withExpiresAt(now.plus(props.expiration()))
                 .sign(algorithm);
     }
 
