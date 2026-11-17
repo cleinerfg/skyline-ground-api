@@ -9,7 +9,6 @@ import com.skylineground.shared.exception.web.resolver.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -30,7 +29,6 @@ public class RestExceptionHandler {
     private final InvalidPasswordResolver invalidPasswordResolver;
     private final ProjectAlreadyExistsResolver projectAlreadyExistsResolver;
     private final AppExceptionResolver appExceptionResolver;
-    private final InsufficientAuthenticationResolver insufficientAuthenticationResolver;
     private final UnexpectedExceptionResolver unexpectedExceptionResolver;
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
@@ -71,11 +69,6 @@ public class RestExceptionHandler {
     @ExceptionHandler(AppException.class)
     public ProblemDetail handleAppException(AppException ex) {
         return appExceptionResolver.resolve(ex);
-    }
-
-    @ExceptionHandler(InsufficientAuthenticationException.class)
-    public ProblemDetail handleInsufficientAuthentication() {
-        return insufficientAuthenticationResolver.resolve();
     }
 
     @ExceptionHandler(Exception.class)
