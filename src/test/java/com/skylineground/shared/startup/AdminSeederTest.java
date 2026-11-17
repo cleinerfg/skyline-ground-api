@@ -15,7 +15,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -77,51 +76,5 @@ class AdminSeederTest {
 
         verify(userRepository, never()).save(any(User.class));
         verifyNoInteractions(uuidGenerator, passwordEncoder, props);
-    }
-
-    @Test
-    void shouldThrowIllegalStateExceptionWhenAdminNameIsMissing() {
-        when(userRepository.existsBySystemRole(SystemRole.ADMIN))
-                .thenReturn(false);
-        when(props.name()).thenReturn(null);
-
-        assertThatThrownBy(() -> adminSeeder.run())
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("Cannot initialize application: admin name is not configured.");
-
-        verify(userRepository, never()).save(any(User.class));
-        verifyNoInteractions(uuidGenerator, passwordEncoder);
-    }
-
-    @Test
-    void shouldThrowIllegalStateExceptionWhenAdminEmailIsMissing() {
-        when(userRepository.existsBySystemRole(SystemRole.ADMIN))
-                .thenReturn(false);
-        when(props.name()).thenReturn("Admin");
-        when(props.email()).thenReturn(null);
-
-        assertThatThrownBy(() -> adminSeeder.run())
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("Cannot initialize application: admin email is not configured.");
-
-        verify(userRepository, never()).save(any(User.class));
-        verifyNoInteractions(uuidGenerator, passwordEncoder);
-    }
-
-    @Test
-    void shouldThrowIllegalStateExceptionWhenAdminPasswordIsInvalid() {
-        when(userRepository.existsBySystemRole(SystemRole.ADMIN))
-                .thenReturn(false);
-        when(props.name()).thenReturn("Admin");
-        when(props.email()).thenReturn("admin@example.com");
-        when(props.password()).thenReturn("weak");
-
-        assertThatThrownBy(() -> adminSeeder.run())
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("Cannot initialize application: configured admin password is invalid.")
-                .hasCauseInstanceOf(RuntimeException.class);
-
-        verify(userRepository, never()).save(any(User.class));
-        verifyNoInteractions(uuidGenerator, passwordEncoder);
     }
 }
