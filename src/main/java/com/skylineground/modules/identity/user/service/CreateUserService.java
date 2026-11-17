@@ -7,6 +7,7 @@ import com.skylineground.modules.identity.user.dto.UserResponse;
 import com.skylineground.modules.identity.user.exception.EmailAlreadyExistsException;
 import com.skylineground.modules.identity.user.persistence.User;
 import com.skylineground.modules.identity.user.persistence.UserRepository;
+import com.skylineground.modules.identity.user.validator.PasswordValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,8 @@ public class CreateUserService {
 
     @Transactional
     public UserResponse execute(UserRequest request) {
+        PasswordValidator.validate(request.password());
+
         if (repository.existsByEmail(request.email())) {
             throw new EmailAlreadyExistsException(request.email());
         }
