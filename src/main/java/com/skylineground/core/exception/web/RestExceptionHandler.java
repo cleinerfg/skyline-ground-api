@@ -2,6 +2,8 @@ package com.skylineground.core.exception.web;
 
 import com.skylineground.core.exception.AppException;
 import com.skylineground.core.exception.web.resolver.*;
+import com.skylineground.modules.identity.user.exception.InvalidPasswordException;
+import com.skylineground.modules.identity.user.exception.InvalidPasswordResolver;
 import com.skylineground.modules.project.exception.ProjectAlreadyExistsException;
 import com.skylineground.modules.project.exception.ProjectAlreadyExistsResolver;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,7 @@ public class RestExceptionHandler {
     private final ValidationFailureResolver validationFailureResolver;
     private final RouteNotFoundResolver routeNotFoundResolver;
     private final MethodNotAllowedResolver methodNotAllowedResolver;
+    private final InvalidPasswordResolver invalidPasswordResolver;
     private final ProjectAlreadyExistsResolver projectAlreadyExistsResolver;
     private final AppExceptionResolver appExceptionResolver;
     private final InsufficientAuthenticationResolver insufficientAuthenticationResolver;
@@ -53,6 +56,11 @@ public class RestExceptionHandler {
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ProblemDetail handleMethodNotAllowed() {
         return methodNotAllowedResolver.resolve();
+    }
+
+    @ExceptionHandler(InvalidPasswordException.class)
+    public ProblemDetail handleInvalidPassword(InvalidPasswordException ex) {
+        return invalidPasswordResolver.resolve(ex);
     }
 
     @ExceptionHandler(ProjectAlreadyExistsException.class)
