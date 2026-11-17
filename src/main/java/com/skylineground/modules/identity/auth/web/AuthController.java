@@ -9,6 +9,7 @@ import com.skylineground.modules.identity.user.dto.CreateUserRequest;
 import com.skylineground.modules.identity.user.dto.UserResponse;
 import com.skylineground.modules.identity.user.service.CreateUserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,7 @@ public class AuthController {
 
     @RegisterUserDoc
     @PostMapping("/register")
-    public ResponseEntity<UserResponse> register(@RequestBody CreateUserRequest request) {
+    public ResponseEntity<UserResponse> register(@Valid @RequestBody CreateUserRequest request) {
         UserResponse response = createUserService.execute(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
