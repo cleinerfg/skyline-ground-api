@@ -1,14 +1,14 @@
 package com.skylineground.modules.identity.user.service;
 
-import com.skylineground.core.config.uuid.UuidGenerator;
-import com.skylineground.core.exception.AppException;
-import com.skylineground.core.exception.ErrorCode;
 import com.skylineground.modules.identity.user.UserMapper;
 import com.skylineground.modules.identity.user.dto.UserRequest;
 import com.skylineground.modules.identity.user.dto.UserResponse;
 import com.skylineground.modules.identity.user.exception.InvalidPasswordException;
 import com.skylineground.modules.identity.user.persistence.User;
 import com.skylineground.modules.identity.user.persistence.UserRepository;
+import com.skylineground.shared.config.uuid.UuidGenerator;
+import com.skylineground.shared.exception.AppException;
+import com.skylineground.shared.exception.ErrorCode;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

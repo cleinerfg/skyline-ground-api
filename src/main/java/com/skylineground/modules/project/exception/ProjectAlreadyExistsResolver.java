@@ -1,6 +1,6 @@
 package com.skylineground.modules.project.exception;
 
-import com.skylineground.core.exception.web.support.ProblemDetailFactory;
+import com.skylineground.shared.exception.web.support.ProblemDetailFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ProblemDetail;
 import org.springframework.stereotype.Component;

@@ -1,10 +1,10 @@
 package com.skylineground.modules.identity.auth.service;
 
-import com.skylineground.core.security.jwt.TokenService;
 import com.skylineground.modules.identity.auth.dto.LoginRequest;
 import com.skylineground.modules.identity.auth.dto.LoginResponse;
 import com.skylineground.modules.identity.auth.exception.InvalidCredentialsException;
 import com.skylineground.modules.identity.user.persistence.User;
+import com.skylineground.shared.security.jwt.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;

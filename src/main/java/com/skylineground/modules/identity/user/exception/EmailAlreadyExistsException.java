@@ -1,7 +1,7 @@
 package com.skylineground.modules.identity.user.exception;
 
-import com.skylineground.core.exception.AppException;
-import com.skylineground.core.exception.ErrorCode;
+import com.skylineground.shared.exception.AppException;
+import com.skylineground.shared.exception.ErrorCode;
 
 public class EmailAlreadyExistsException extends AppException {
     public EmailAlreadyExistsException(String email) {

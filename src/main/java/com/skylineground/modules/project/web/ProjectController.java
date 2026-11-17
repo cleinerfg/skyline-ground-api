@@ -1,11 +1,11 @@
 package com.skylineground.modules.project.web;
 
-import com.skylineground.core.security.SecurityContextService;
-import com.skylineground.core.security.jwt.TokenPayload;
 import com.skylineground.modules.project.dto.ProjectRequest;
 import com.skylineground.modules.project.dto.ProjectResponse;
 import com.skylineground.modules.project.service.CreateProjectService;
 import com.skylineground.modules.project.web.doc.CreateProjectDoc;
+import com.skylineground.shared.security.SecurityContextService;
+import com.skylineground.shared.security.jwt.TokenPayload;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,7 @@
 package com.skylineground.modules.identity.user.persistence;
 
-import com.skylineground.core.common.BaseEntity;
 import com.skylineground.modules.identity.user.constant.SystemRole;
+import com.skylineground.shared.common.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;

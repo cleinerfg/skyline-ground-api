@@ -1,8 +1,5 @@
 package com.skylineground.modules.project.service;
 
-import com.skylineground.core.config.uuid.UuidGenerator;
-import com.skylineground.core.exception.AppException;
-import com.skylineground.core.exception.ErrorCode;
 import com.skylineground.modules.identity.user.dto.UserSummary;
 import com.skylineground.modules.identity.user.persistence.User;
 import com.skylineground.modules.identity.user.persistence.UserReferenceProvider;
@@ -14,6 +11,9 @@ import com.skylineground.modules.project.dto.ProjectResponse;
 import com.skylineground.modules.project.exception.ProjectAlreadyExistsException;
 import com.skylineground.modules.project.persistence.Project;
 import com.skylineground.modules.project.persistence.ProjectRepository;
+import com.skylineground.shared.config.uuid.UuidGenerator;
+import com.skylineground.shared.exception.AppException;
+import com.skylineground.shared.exception.ErrorCode;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

@@ -1,7 +1,7 @@
 package com.skylineground.modules.project.exception;
 
-import com.skylineground.core.exception.AppException;
-import com.skylineground.core.exception.ErrorCode;
+import com.skylineground.shared.exception.AppException;
+import com.skylineground.shared.exception.ErrorCode;
 import lombok.Getter;
 
 import java.util.UUID;

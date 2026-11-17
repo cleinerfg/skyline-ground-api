@@ -1,7 +1,5 @@
 package com.skylineground.modules.project.service;
 
-import com.skylineground.core.config.uuid.UuidGenerator;
-import com.skylineground.core.exception.AppException;
 import com.skylineground.modules.identity.user.dto.UserSummary;
 import com.skylineground.modules.identity.user.persistence.User;
 import com.skylineground.modules.identity.user.persistence.UserReferenceProvider;
@@ -12,6 +10,8 @@ import com.skylineground.modules.project.dto.ProjectResponse;
 import com.skylineground.modules.project.exception.ProjectAlreadyExistsException;
 import com.skylineground.modules.project.persistence.Project;
 import com.skylineground.modules.project.persistence.ProjectRepository;
+import com.skylineground.shared.config.uuid.UuidGenerator;
+import com.skylineground.shared.exception.AppException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

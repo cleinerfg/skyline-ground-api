@@ -1,9 +1,9 @@
 package com.skylineground.modules.project.persistence;
 
-import com.skylineground.core.common.BaseEntity;
 import com.skylineground.modules.identity.user.persistence.User;
 import com.skylineground.modules.project.constant.ProjectStatus;
 import com.skylineground.modules.project.constant.ProjectType;
+import com.skylineground.shared.common.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

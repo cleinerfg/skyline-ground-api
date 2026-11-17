@@ -1,0 +1,26 @@
+package com.skylineground.shared.exception.web.resolver;
+
+import com.skylineground.shared.exception.web.resolver.handler.InvalidQueryParamsHandler;
+import com.skylineground.shared.exception.web.resolver.handler.ValidationFailHandler;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ProblemDetail;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+
+@RequiredArgsConstructor
+@Component
+public class ValidationFailureResolver {
+
+    private final ValidationFailHandler validationFailHandler;
+    private final InvalidQueryParamsHandler invalidQueryParamsHandler;
+
+    public ProblemDetail resolve(MethodArgumentNotValidException ex) {
+        var fieldErrors = ex.getBindingResult().getFieldErrors();
+
+        var queryParamsProblem = invalidQueryParamsHandler.handle(fieldErrors);
+
+        return queryParamsProblem != null
+                ? queryParamsProblem
+                : validationFailHandler.handle(fieldErrors);
+    }
+}

@@ -1,6 +1,5 @@
 package com.skylineground.modules.identity.user.service;
 
-import com.skylineground.core.config.uuid.UuidGenerator;
 import com.skylineground.modules.identity.user.UserMapper;
 import com.skylineground.modules.identity.user.dto.UserRequest;
 import com.skylineground.modules.identity.user.dto.UserResponse;
@@ -8,6 +7,7 @@ import com.skylineground.modules.identity.user.exception.EmailAlreadyExistsExcep
 import com.skylineground.modules.identity.user.persistence.User;
 import com.skylineground.modules.identity.user.persistence.UserRepository;
 import com.skylineground.modules.identity.user.validator.PasswordValidator;
+import com.skylineground.shared.config.uuid.UuidGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
