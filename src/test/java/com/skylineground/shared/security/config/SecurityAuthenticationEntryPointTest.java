@@ -3,32 +3,33 @@ package com.skylineground.shared.security.config;
 import com.skylineground.shared.security.jwt.TokenException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class SecurityAuthenticationEntryPointTest {
 
+    @Mock
     private HandlerExceptionResolver resolver;
-    private SecurityAuthenticationEntryPoint entryPoint;
 
+    @Mock
     private HttpServletRequest request;
+
+    @Mock
     private HttpServletResponse response;
-    private AuthenticationException authException;
 
-    @BeforeEach
-    void setUp() {
-        resolver = mock(HandlerExceptionResolver.class);
-        entryPoint = new SecurityAuthenticationEntryPoint(resolver);
+    private final AuthenticationException authException = new BadCredentialsException("Authentication failed");
 
-        request = mock(HttpServletRequest.class);
-        response = mock(HttpServletResponse.class);
-        authException = new BadCredentialsException("Authentication failed");
-    }
+    @InjectMocks
+    private SecurityAuthenticationEntryPoint entryPoint;
 
     @Test
     void shouldResolveStoredTokenException() {
