@@ -3,6 +3,7 @@ package com.skylineground.modules.identity.user.cache;
 
 import com.skylineground.modules.identity.user.persistence.UserReferenceProvider;
 import com.skylineground.modules.identity.user.persistence.UserRepository;
+import com.skylineground.shared.exception.AppException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
@@ -16,13 +17,16 @@ import java.util.UUID;
  */
 @Component
 @RequiredArgsConstructor
-public class UserIdCacheResolver {
+public class CachedUserIdProvider {
 
     private final UserRepository repository;
 
     @Cacheable(value = UserCacheNames.USER_INTERNAL_ID, key = "#externalId")
     public Long byExternalId(UUID externalId) {
         return repository.findIdByExternalId(externalId)
-                .orElseThrow(() -> new RuntimeException("User not found with externalId: " + externalId));
+                .orElseThrow(() -> AppException.systemIntegrity(
+                        new RuntimeException("User is null"),
+                        "Invalid DB state, User not found with externalId: " + externalId
+                ));
     }
 }
