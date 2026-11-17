@@ -1,5 +1,6 @@
 package com.skylineground.shared.security.config;
 
+import com.skylineground.modules.identity.user.constant.SystemRole;
 import com.skylineground.shared.security.jwt.TokenException;
 import com.skylineground.shared.security.jwt.TokenPayload;
 import com.skylineground.shared.security.jwt.TokenService;
@@ -17,6 +18,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.io.IOException;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -69,7 +71,11 @@ class SecurityFilterTest {
     @Test
     void shouldSetAuthenticationWhenTokenIsValid() throws ServletException, IOException {
         String token = "valid-token";
-        TokenPayload tokenPayload = mock(TokenPayload.class);
+
+        TokenPayload tokenPayload = TokenPayload.builder()
+                .externalId(UUID.randomUUID())
+                .systemRole(SystemRole.MEMBER)
+                .build();
 
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.addHeader("Authorization", "Bearer " + token);
@@ -85,9 +91,11 @@ class SecurityFilterTest {
         assertThat(authentication)
                 .isInstanceOf(UsernamePasswordAuthenticationToken.class);
 
-        assertThat(authentication.getPrincipal()).isEqualTo(tokenPayload);
+        assertThat(authentication.getPrincipal()).isSameAs(tokenPayload);
         assertThat(authentication.getCredentials()).isNull();
-        assertThat(authentication.getAuthorities()).isEmpty();
+        assertThat(authentication.getAuthorities())
+                .extracting("authority")
+                .containsExactly("ROLE_MEMBER");
 
         verify(tokenService).validate(token);
         verify(filterChain).doFilter(request, response);
@@ -123,9 +131,13 @@ class SecurityFilterTest {
     }
 
     @Test
-    void shouldExtractTokenWithoutModifyingBearerValue() throws ServletException, IOException {
+    void shouldExtractTokenFromBearerAuthorizationHeader() throws ServletException, IOException {
         String token = "valid-token";
-        TokenPayload tokenPayload = mock(TokenPayload.class);
+
+        TokenPayload tokenPayload = TokenPayload.builder()
+                .externalId(UUID.randomUUID())
+                .systemRole(SystemRole.ADMIN)
+                .build();
 
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.addHeader("Authorization", "Bearer " + token);
@@ -137,5 +149,6 @@ class SecurityFilterTest {
         securityFilter.doFilterInternal(request, response, filterChain);
 
         verify(tokenService).validate(token);
+        verifyNoMoreInteractions(tokenService);
     }
 }
