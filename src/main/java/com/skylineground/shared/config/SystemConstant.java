@@ -12,5 +12,4 @@ public final class SystemConstant {
     public static final Duration JWT_MIN_TOKEN_EXPIRATION = Duration.ofMinutes(5);
 
     public static final int PASSWORD_MIN_LENGTH = 8;
-    public static final int PASSWORD_MAX_LENGTH = 64;
 }

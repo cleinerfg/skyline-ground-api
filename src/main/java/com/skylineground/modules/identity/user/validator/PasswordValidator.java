@@ -2,6 +2,7 @@ package com.skylineground.modules.identity.user.validator;
 
 
 import com.skylineground.modules.identity.user.exception.InvalidPasswordException;
+import com.skylineground.shared.config.SystemConstant;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -11,13 +12,11 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class PasswordValidator {
 
-    public static final int MIN_PASSWORD_LENGTH = 8;
-
     public static void validate(String password) {
 
         Set<PasswordError> fails = new LinkedHashSet<>();
 
-        if (password.length() < MIN_PASSWORD_LENGTH) fails.add(PasswordError.TOO_SHORT);
+        if (password.length() < SystemConstant.PASSWORD_MIN_LENGTH) fails.add(PasswordError.TOO_SHORT);
         if (password.chars().anyMatch(Character::isWhitespace)) fails.add(PasswordError.NO_WHITESPACE);
         if (password.chars().noneMatch(Character::isUpperCase)) fails.add(PasswordError.MUST_HAVE_UPPERCASE);
         if (password.chars().noneMatch(Character::isLowerCase)) fails.add(PasswordError.MUST_HAVE_LOWERCASE);
