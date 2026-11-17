@@ -6,6 +6,7 @@ import com.skylineground.core.exception.ErrorCode;
 import com.skylineground.modules.identity.user.UserMapper;
 import com.skylineground.modules.identity.user.dto.UserRequest;
 import com.skylineground.modules.identity.user.dto.UserResponse;
+import com.skylineground.modules.identity.user.exception.InvalidPasswordException;
 import com.skylineground.modules.identity.user.persistence.User;
 import com.skylineground.modules.identity.user.persistence.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -23,6 +24,8 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CreateUserServiceTest {
+
+    private static final String VALID_PASSWORD = "SecurePassword125!#";
 
     @Mock
     private UserRepository repository;
@@ -42,7 +45,7 @@ class CreateUserServiceTest {
     @Test
     void shouldCreateUserSuccessfully() {
         UUID generatedExternalId = UUID.randomUUID();
-        String rawPassword = "SecurePassword123!";
+        String rawPassword = VALID_PASSWORD;
         String encodedPassword = "encodedPassword";
 
         UserRequest request = createUserRequest();
@@ -77,6 +80,27 @@ class CreateUserServiceTest {
     }
 
     @Test
+    void shouldThrowInvalidPasswordExceptionWhenPasswordIsInvalid() {
+        UserRequest request = UserRequest.builder()
+                .name("Jeremy Gilbert")
+                .email("jeremy@example.com")
+                .password("invalid")
+                .build();
+
+        assertThatThrownBy(() -> createUserService.execute(request))
+                .isInstanceOf(InvalidPasswordException.class)
+                .extracting("errorCode")
+                .isEqualTo(ErrorCode.INVALID_PASSWORD);
+
+        verifyNoInteractions(
+                repository,
+                mapper,
+                passwordEncoder,
+                uuidGenerator
+        );
+    }
+
+    @Test
     void shouldThrowEmailAlreadyExistsExceptionWhenEmailExists() {
         UserRequest request = createUserRequest();
 
@@ -101,7 +125,7 @@ class CreateUserServiceTest {
         return UserRequest.builder()
                 .name("Jeremy Gilbert")
                 .email("jeremy@example.com")
-                .password("SecurePassword123!")
+                .password(VALID_PASSWORD)
                 .build();
     }
 }
