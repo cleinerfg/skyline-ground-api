@@ -1,1 +1,1 @@
-CREATE TYPE system_role AS ENUM ('ADMIN', 'MANAGER', 'MEMBER');
+CREATE TYPE system_role AS ENUM ('ADMIN', 'MEMBER');
