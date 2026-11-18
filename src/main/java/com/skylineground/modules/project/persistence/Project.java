@@ -3,14 +3,16 @@ package com.skylineground.modules.project.persistence;
 import com.skylineground.modules.identity.user.persistence.User;
 import com.skylineground.modules.project.constant.ProjectStatus;
 import com.skylineground.modules.project.constant.ProjectType;
-import com.skylineground.shared.common.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.type.SqlTypes;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -18,7 +20,7 @@ import java.util.UUID;
 @Table(name = "project")
 @Getter @Setter
 @NoArgsConstructor
-public class Project extends BaseEntity {
+public class Project {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -63,6 +65,16 @@ public class Project extends BaseEntity {
     @JoinColumn(name = "creator_id", nullable = false)
     @Setter(AccessLevel.NONE)
     private User creator;
+
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false, updatable = false)
+    @Setter(AccessLevel.NONE)
+    private Instant createdAt;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    @Setter(AccessLevel.NONE)
+    private Instant updatedAt;
 
     @Builder
     public Project(
