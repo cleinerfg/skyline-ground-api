@@ -18,62 +18,64 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "project")
-@Getter @Setter
+@Getter
 @NoArgsConstructor
 public class Project {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.NONE)
     private Long id;
 
     @NotNull
     @Column(name = "external_id", nullable = false, unique = true, updatable = false)
-    @Setter(AccessLevel.NONE)
     private UUID externalId;
 
     @NotNull
     @Size(max = 255)
+    @Setter
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Setter
     @Column(name = "description")
     private String description;
 
     @NotNull
+    @Setter
     @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     @Column(name = "type", nullable = false, columnDefinition = "project_type")
     private ProjectType type;
 
     @NotNull
+    @Setter
     @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     @Column(name = "status", nullable = false, columnDefinition = "project_status")
     private ProjectStatus status = ProjectStatus.PLANNING;
 
     @NotNull
+    @Setter
     @Column(name = "start_date", nullable = false)
     private LocalDate startDate;
 
+    @Setter
     @Column(name = "expected_end_date")
     private LocalDate expectedEndDate;
 
+    @Setter
     @Column(name = "end_date")
     private LocalDate endDate;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id", nullable = false)
-    @Setter(AccessLevel.NONE)
     private User creator;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
-    @Setter(AccessLevel.NONE)
     private Instant createdAt;
 
     @UpdateTimestamp
     @Column(name = "updated_at")
-    @Setter(AccessLevel.NONE)
     private Instant updatedAt;
 
     @Builder

@@ -3,7 +3,10 @@ package com.skylineground.modules.identity.user.persistence;
 import com.skylineground.modules.identity.user.constant.SystemRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -13,30 +16,31 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Getter @Setter
+@Getter
 @NoArgsConstructor
 @Table(name = "app_user")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.NONE)
     private Long id;
 
     @NotNull
     @Column(name = "external_id", nullable = false, unique = true, updatable = false)
-    @Setter(AccessLevel.NONE)
     private UUID externalId;
 
     @NotNull
+    @Setter
     @Column(nullable = false)
     private String name;
 
     @NotNull
+    @Setter
     @Column(nullable = false, unique = true)
     private String email;
 
     @NotNull
+    @Setter
     @Column(name = "password_hash", nullable = false)
     private String password;
 
@@ -47,12 +51,10 @@ public class User {
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
-    @Setter(AccessLevel.NONE)
     private Instant createdAt;
 
     @UpdateTimestamp
     @Column(name = "updated_at")
-    @Setter(AccessLevel.NONE)
     private Instant updatedAt;
 
     @Builder
