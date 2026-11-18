@@ -62,4 +62,14 @@ public class User {
         this.email = email;
         this.password = password;
     }
+
+    public static User createAdmin(UUID externalId, String name, String email, String password) {
+        User user = new User();
+        user.externalId = externalId;
+        user.name = name;
+        user.email = email;
+        user.password = password;
+        user.systemRole = SystemRole.ADMIN;
+        return user;
+    }
 }

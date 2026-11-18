@@ -23,14 +23,12 @@ public class AdminSeeder implements CommandLineRunner {
 
         if (userRepository.existsBySystemRole(SystemRole.ADMIN)) return;
 
-        var admin = User.builder()
-                .externalId(uuidGenerator.generate())
-                .name(props.name())
-                .email(props.email())
-                .password(passwordEncoder.encode(props.password()))
-                .build();
-
-        admin.setSystemRole(SystemRole.ADMIN);
+        var admin = User.createAdmin(
+                uuidGenerator.generate(),
+                props.name(),
+                props.email(),
+                passwordEncoder.encode(props.password())
+        );
 
         userRepository.save(admin);
     }
